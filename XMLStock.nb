@@ -1,0 +1,3024 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 4.2'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     79260,       1667]*)
+(*NotebookOutlinePosition[    117968,       2988]*)
+(*  CellTagsIndexPosition[    117924,       2984]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Importing Stock Data", "Title",
+  TextAlignment->Center],
+
+Cell["A Finance Example Using XML", "Subtitle",
+  TextAlignment->Center],
+
+Cell[TextData[{
+  "     This example uses ",
+  ButtonBox["XMLToday",
+    ButtonData:>{
+      URL[ "http://www.xmltoday.com/examples/stockquote/"], None},
+    ButtonStyle->"Hyperlink"],
+  " to obtain stock quotes in an XML format using a URL query system.  ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " 4.2 provides functions that request XML data from a specified URL.  Once \
+obtained, the data can be analyzed and presented using ",
+  StyleBox["Mathematica.",
+    FontSlant->"Italic"]
+}], "Text"],
+
+Cell["\<\
+First, we need to make use of some graphics functions provided in \
+the Graphics`Graphics` standard package.  Tho following command load the \
+necessary package.\
+\>", "Text"],
+
+Cell[BoxData[
+    \(<< Graphics`Graphics`\)], "Input"],
+
+Cell["\<\
+Next, we perform the URL query to obtain the XML data.  The \
+requested stocks can be modified by changing the values that follow the \"?s=\
+\" parameter.\
+\>", "Text"],
+
+Cell[BoxData[
+    \(\(xmlquotes = 
+        XML`Parser`XMLGet["\<http://www.xmltoday.com/examples/stockquote/\
+getxmlquote.vep?s=ba+lmt+ibm+int+amd+mmm\>"]\ ;\)\)], "Input"],
+
+Cell[TextData[{
+  "Now that we have the data, we need to extract the information and present \
+it in a form that ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " can graph."
+}], "Text"],
+
+Cell[BoxData[
+    \(\(GetQuotes[xml_] := 
+        Cases[xml, 
+          XMLElement["\<stock_quote\>", _, {___, 
+                XMLElement["\<symbol\>", _, {symbol_}], ___, 
+                XMLElement["\<price\>", {"\<type\>" -> "\<ask\>", "\<value\>" \
+\[Rule] v_}, {}], ___}] \[RuleDelayed] {symbol, ToExpression[v]}, 
+          Infinity];\)\)], "Input"],
+
+Cell["We can see the results of the formatting as follows.", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(quotes = GetQuotes[xmlquotes]\)], "Input"],
+
+Cell[BoxData[
+    \({{"BA", 43.83`}, {"LMT", 65.51`}, {"IBM", 74.65`}, {"INT", 
+        20.04`}, {"AMD", 9.67`}, {"MMM", 127.55`}}\)], "Output"]
+}, Open  ]],
+
+Cell["We are now ready to plot the data.", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(BarChart[\(#[\([2]\)] &\) /@ quotes, 
+        BarLabels \[Rule] \((\(#[\([1]\)] &\) /@ quotes)\), 
+        TextStyle \[Rule] {FontFamily -> "\<Times\>", FontSize \[Rule] 15, 
+            FontWeight -> "\<Bold\>"}, 
+        Frame \[Rule] {True, True, False, False}, ImageSize \[Rule] 450, 
+        PlotLabel -> "\<Stock Quotes from XMLToday\>"];\)\)], "Input"],
+
+Cell[GraphicsData["PostScript", "\<\
+%!
+%%Creator: Mathematica
+%%AspectRatio: .61803 
+%%ImageSize: 450 278.115 
+MathPictureStart
+/Mabs {
+Mgmatrix idtransform
+Mtmatrix dtransform
+} bind def
+/Mabsadd { Mabs
+3 -1 roll add
+3 1 roll add
+exch } bind def
+%% Graphics
+%%IncludeResource: font Courier
+%%IncludeFont: Courier
+/Courier findfont 10  scalefont  setfont
+% Scaling calculations
+-0.0645161 0.16129 0.0147151 0.00461469 [
+[.09677 -0.0125 -12.375 -18.9375 ]
+[.09677 -0.0125 12.375 0 ]
+[.25806 -0.0125 -19.0313 -18.9375 ]
+[.25806 -0.0125 19.0313 0 ]
+[.41935 -0.0125 -17 -18.9375 ]
+[.41935 -0.0125 17 0 ]
+[.58065 -0.0125 -15.3125 -18.9375 ]
+[.58065 -0.0125 15.3125 0 ]
+[.74194 -0.0125 -19.9063 -18.9375 ]
+[.74194 -0.0125 19.9063 0 ]
+[.90323 -0.0125 -23.2813 -18.9375 ]
+[.90323 -0.0125 23.2813 0 ]
+[ 0 0 -0.125 0 ]
+[-0.0125 .01472 -11.5625 -9.46875 ]
+[-0.0125 .01472 0 9.46875 ]
+[-0.0125 .10701 -19.125 -9.46875 ]
+[-0.0125 .10701 0 9.46875 ]
+[-0.0125 .1993 -19.125 -9.46875 ]
+[-0.0125 .1993 0 9.46875 ]
+[-0.0125 .2916 -19.125 -9.46875 ]
+[-0.0125 .2916 0 9.46875 ]
+[-0.0125 .38389 -19.125 -9.46875 ]
+[-0.0125 .38389 0 9.46875 ]
+[-0.0125 .47618 -26.6875 -9.46875 ]
+[-0.0125 .47618 0 9.46875 ]
+[-0.0125 .56848 -26.6875 -9.46875 ]
+[-0.0125 .56848 0 9.46875 ]
+[ 0 0 -0.125 0 ]
+[.5 .63053 -101.625 0 ]
+[.5 .63053 101.625 18.9375 ]
+[ 0 0 0 0 ]
+[ 1 .61803 0 0 ]
+] MathScale
+% Start of Graphics
+1 setlinecap
+1 setlinejoin
+newpath
+0 g
+.25 Mabswid
+[ ] 0 setdash
+.09677 0 m
+.09677 .00625 L
+s
+gsave
+.09677 -0.0125 -73.375 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(BA) show
+83.750 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+.25806 0 m
+.25806 .00625 L
+s
+gsave
+.25806 -0.0125 -80.0313 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(LMT) show
+97.063 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+.41935 0 m
+.41935 .00625 L
+s
+gsave
+.41935 -0.0125 -78 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(IBM) show
+93.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+.58065 0 m
+.58065 .00625 L
+s
+gsave
+.58065 -0.0125 -76.3125 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(INT) show
+89.625 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+.74194 0 m
+.74194 .00625 L
+s
+gsave
+.74194 -0.0125 -80.9063 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(AMD) show
+98.813 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+.90323 0 m
+.90323 .00625 L
+s
+gsave
+.90323 -0.0125 -84.2813 -22.9375 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(MMM) show
+105.563 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+0 0 m
+1 0 L
+s
+0 .01472 m
+.00625 .01472 L
+s
+gsave
+-0.0125 .01472 -72.5625 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(0) show
+1.000 setlinewidth
+grestore
+0 .10701 m
+.00625 .10701 L
+s
+gsave
+-0.0125 .10701 -80.125 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(20) show
+1.000 setlinewidth
+grestore
+0 .1993 m
+.00625 .1993 L
+s
+gsave
+-0.0125 .1993 -80.125 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(40) show
+1.000 setlinewidth
+grestore
+0 .2916 m
+.00625 .2916 L
+s
+gsave
+-0.0125 .2916 -80.125 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(60) show
+1.000 setlinewidth
+grestore
+0 .38389 m
+.00625 .38389 L
+s
+gsave
+-0.0125 .38389 -80.125 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(80) show
+1.000 setlinewidth
+grestore
+0 .47618 m
+.00625 .47618 L
+s
+gsave
+-0.0125 .47618 -87.6875 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(100) show
+1.000 setlinewidth
+grestore
+0 .56848 m
+.00625 .56848 L
+s
+gsave
+-0.0125 .56848 -87.6875 -13.4688 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(120) show
+1.000 setlinewidth
+grestore
+.125 Mabswid
+0 .03779 m
+.00375 .03779 L
+s
+0 .06086 m
+.00375 .06086 L
+s
+0 .08394 m
+.00375 .08394 L
+s
+0 .13008 m
+.00375 .13008 L
+s
+0 .15316 m
+.00375 .15316 L
+s
+0 .17623 m
+.00375 .17623 L
+s
+0 .22238 m
+.00375 .22238 L
+s
+0 .24545 m
+.00375 .24545 L
+s
+0 .26852 m
+.00375 .26852 L
+s
+0 .31467 m
+.00375 .31467 L
+s
+0 .33774 m
+.00375 .33774 L
+s
+0 .36082 m
+.00375 .36082 L
+s
+0 .40696 m
+.00375 .40696 L
+s
+0 .43004 m
+.00375 .43004 L
+s
+0 .45311 m
+.00375 .45311 L
+s
+0 .49926 m
+.00375 .49926 L
+s
+0 .52233 m
+.00375 .52233 L
+s
+0 .5454 m
+.00375 .5454 L
+s
+0 .59155 m
+.00375 .59155 L
+s
+0 .61462 m
+.00375 .61462 L
+s
+.25 Mabswid
+0 0 m
+0 .61803 L
+s
+0 .01472 m
+1 .01472 L
+s
+0 0 m
+0 .61803 L
+s
+gsave
+.5 .63053 -162.625 -4 Mabsadd m
+1 1 Mabs scale
+currentpoint translate
+0 26.9375 translate 1 -1 scale
+/g { setgray} bind def
+/k { setcmykcolor} bind def
+/p { gsave} bind def
+/r { setrgbcolor} bind def
+/w { setlinewidth} bind def
+/C { curveto} bind def
+/F { fill} bind def
+/L { lineto} bind def
+/rL { rlineto} bind def
+/P { grestore} bind def
+/s { stroke} bind def
+/S { show} bind def
+/N {currentpoint 3 -1 roll show moveto} bind def
+/Msf { findfont exch scalefont [1 0 0 -1 0 0 ] makefont setfont} bind def
+/m { moveto} bind def
+/Mr { rmoveto} bind def
+/Mx {currentpoint exch pop moveto} bind def
+/My {currentpoint pop exch moveto} bind def
+/X {0 rmoveto} bind def
+/Y {0 exch rmoveto} bind def
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+63.000 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+(Stock) show
+102.688 18.688 moveto
+(Quotes) show
+151.375 18.688 moveto
+(from) show
+186.438 18.688 moveto
+(XMLToday) show
+262.250 18.688 moveto
+%%IncludeResource: font Times-Bold
+%%IncludeFont: Times-Bold
+/Times-Bold findfont 15.000 scalefont
+[1 0 0 -1 0 0 ] makefont setfont
+0.000 0.000 0.000 setrgbcolor
+0.000 0.000 rmoveto
+1.000 setlinewidth
+grestore
+0 0 m
+1 0 L
+1 .61803 L
+0 .61803 L
+closepath
+clip
+newpath
+1 0 0 r
+.03226 .01472 m
+.03226 .21698 L
+.16129 .21698 L
+.16129 .01472 L
+F
+0 g
+.5 Mabswid
+.03226 .01472 m
+.03226 .21698 L
+.16129 .21698 L
+.16129 .01472 L
+.03226 .01472 L
+s
+1 0 0 r
+.19355 .01472 m
+.19355 .31702 L
+.32258 .31702 L
+.32258 .01472 L
+F
+0 g
+.19355 .01472 m
+.19355 .31702 L
+.32258 .31702 L
+.32258 .01472 L
+.19355 .01472 L
+s
+1 0 0 r
+.35484 .01472 m
+.35484 .3592 L
+.48387 .3592 L
+.48387 .01472 L
+F
+0 g
+.35484 .01472 m
+.35484 .3592 L
+.48387 .3592 L
+.48387 .01472 L
+.35484 .01472 L
+s
+1 0 0 r
+.51613 .01472 m
+.51613 .10719 L
+.64516 .10719 L
+.64516 .01472 L
+F
+0 g
+.51613 .01472 m
+.51613 .10719 L
+.64516 .10719 L
+.64516 .01472 L
+.51613 .01472 L
+s
+1 0 0 r
+.67742 .01472 m
+.67742 .05934 L
+.80645 .05934 L
+.80645 .01472 L
+F
+0 g
+.67742 .01472 m
+.67742 .05934 L
+.80645 .05934 L
+.80645 .01472 L
+.67742 .01472 L
+s
+1 0 0 r
+.83871 .01472 m
+.83871 .60332 L
+.96774 .60332 L
+.96774 .01472 L
+F
+0 g
+.83871 .01472 m
+.83871 .60332 L
+.96774 .60332 L
+.96774 .01472 L
+.83871 .01472 L
+s
+% End of Graphics
+MathPictureEnd
+\
+\>"], "Graphics",
+  ImageSize->{450, 278.063},
+  ImageCache->GraphicsData["Bitmap", "\<\
+CF5dJ6E]HGAYHf4PAg9QL6QYHg<PAVmbKF5d0`40007200015R000`400?l00000o`00003oo`3oi[?3
+0?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?3
+0?oV/`00D03oi[<800000080onJc100000020?oV/`D000008@3oi[<7000000<0onJc0`0000020?oV
+/`040000003oi[<0onJc0?oV/`@00000103oi[<4000001l0onJc100000020?oV/`P000000`3oi[<3
+00000080onJc00@000000?oV/`3oi[<0onJc1000000O0?oV/`@000000P3oi[<3000000@0onJc00<0
+00000?oV/`3oi[<00`3oi[<400000200onJc100000020?oV/`D0000000@0onJc0000000000000000
+0P3oi[<010000000onJc0?oV/`3oi[<400000080onJc1P00000H0?oV/`<000000P3oi[<010000000
+onJc0?oV/`3oi[<400000080onJc0`0000020?oV/`040000003oi[<0onJc0?oV/`@000000P3oi[<3
+00000080onJc00@000000?oV/`3oi[<0onJc1000000V0?oV/`00D@3oi[<2000000@0onJc0P000002
+0?oV/`030000003oi[<0onJc00@0onJc0P00000S0?oV/`8000000`3oi[<2000000<0onJc00@00000
+0?oV/`3oi[<0onJc0P0000030?oV/`8000001P3oi[<200000240onJc0P0000040?oV/`800000103o
+i[<2000000<0onJc00@000000?oV/`3oi[<0onJc0P0000030?oV/`8000008@3oi[<2000000@0onJc
+00<000000?oV/`3oi[<00`3oi[<00`000000onJc0?oV/`040?oV/`8000008P3oi[<00`000000onJc
+0?oV/`040?oV/`8000000`3oi[<010000000onJc0?oV/`3oi[<2000000<0onJc0P0000040?oV/`80
+00000`3oi[<2000001L0onJc00@000000?oV/`3oi[<0onJc0P0000030?oV/`800000103oi[<01000
+0000onJc0?oV/`3oi[<2000000<0onJc0P0000040?oV/`040000003oi[<0onJc0?oV/`8000000`3o
+i[<2000002L0onJc001A0?oV/`800000103oi[<2000000<0onJc00<000000?oV/`3oi[<00P3oi[<2
+000002@0onJc0P0000040?oV/`050000003oi[<0onJc0?oV/`0000000P3oi[<3000000<0onJc0P00
+00060?oV/`8000008@3oi[<2000000@0onJc0P0000040?oV/`8000000`3oi[<00`000000onJc0?oV
+/`03000000<0onJc0P00000Q0?oV/`800000103oi[<00`000000onJc0?oV/`020?oV/`8000001P3o
+i[<2000002<0onJc00<000000?oV/`3oi[<00P3oi[<2000000@0onJc00<000000?oV/`3oi[<00`00
+00030?oV/`800000103oi[<2000000<0onJc0P00000G0?oV/`030000003oi[<0onJc00<000000`3o
+i[<2000000@0onJc00<000000?oV/`3oi[<00`0000030?oV/`800000103oi[<00`000000onJc0?oV
+/`03000000<0onJc0P00000W0?oV/`00D@3oi[<2000000@0onJc0P0000030?oV/`L00000903oi[<2
+000000@0onJc00D000000?oV/`3oi[<0onJc000000020?oV/`80000000@0onJc0000003oi[<0onJc
+0P0000060?oV/`8000008@3oi[<2000000@0onJc0P0000040?oV/`8000000`3oi[<00`000000onJc
+0?oV/`02000000040?oV/`000000onJc0?oV/`8000008@3oi[<2000000@0onJc00@000000?oV/`3o
+i[<0onJc0`0000060?oV/`8000008`3oi[<7000000@0onJc00<000000?oV/`3oi[<00P000000103o
+i[<000000?oV/`3oi[<2000000@0onJc0P0000040?oV/`8000005P3oi[<00`000000onJc0?oV/`02
+000000040?oV/`000000onJc0?oV/`800000103oi[<00`000000onJc0?oV/`02000000040?oV/`00
+0000onJc0?oV/`800000103oi[<00`000000onJc0?oV/`02000000040?oV/`000000onJc0?oV/`80
+00009`3oi[<00540onJc0P0000030?oV/`8000001@3oi[<00`000000onJc0?oV/`02000002D0onJc
+0P0000080?oV/`030000003oi[<0onJc0080000000@0onJc0000003oi[<0onJc0P0000060?oV/`80
+00008@3oi[<2000000@0onJc0P0000030?oV/`800000103oi[<00`000000onJc0?oV/`0200000004
+0?oV/`000000onJc0?oV/`8000008@3oi[<2000000@0onJc00@000000?oV/`3oi[<0onJc0`000006
+0?oV/`800000903oi[<00`000000onJc0?oV/`02000000D0onJc00<000000?oV/`3oi[<00P000000
+103oi[<000000?oV/`3oi[<2000000@0onJc0P0000040?oV/`8000005P3oi[<00`000000onJc0?oV
+/`02000000040?oV/`000000onJc0?oV/`800000103oi[<00`000000onJc0?oV/`02000000040?oV
+/`000000onJc0?oV/`800000103oi[<00`000000onJc0?oV/`02000000040?oV/`000000onJc0?oV
+/`8000009`3oi[<00540onJc1P0000060?oV/`030000003oi[<0onJc008000009@3oi[<2000000P0
+onJc00@000000?oV/`00000000000P3oi[<00`000000onJc0?oV/`02000000H0onJc0P00000Q0?oV
+/`800000103oi[<6000000D0onJc00@000000?oV/`00000000000P3oi[<00`000000onJc0?oV/`02
+00000240onJc0P0000040?oV/`030000003oi[<0onJc0080000000<0onJc0000003oi[<01@3oi[<2
+000002@0onJc00<000000?oV/`3oi[<00P0000050?oV/`040000003oi[<0000000000080onJc00<0
+00000?oV/`3oi[<00P0000040?oV/`800000103oi[<2000001H0onJc00@000000?oV/`0000000000
+0P3oi[<00`000000onJc0?oV/`02000000@0onJc00@000000?oV/`00000000000P3oi[<00`000000
+onJc0?oV/`02000000@0onJc00@000000?oV/`00000000000P3oi[<00`000000onJc0?oV/`020000
+02L0onJc001A0?oV/`8000000`3oi[<2000000D0onJc00@000000?oV/`00000000009P3oi[<20000
+00P0onJc00@000000?oV/`00000000000`3oi[<010000000onJc0000000000060?oV/`8000008@3o
+i[<2000000@0onJc0P0000030?oV/`800000103oi[<010000000onJc0000000000030?oV/`040000
+003oi[<0000000000240onJc0P0000040?oV/`040000003oi[<0000000000080onJc00<000000?oV
+/`3oi[<0103oi[<2000002@0onJc00@000000?oV/`00000000001P3oi[<010000000onJc00000000
+00030?oV/`040000003oi[<00000000000@0onJc0P0000040?oV/`8000005P3oi[<010000000onJc
+0000000000030?oV/`040000003oi[<00000000000@0onJc00@000000?oV/`00000000000`3oi[<0
+10000000onJc0000000000040?oV/`040000003oi[<00000000000<0onJc00@000000?oV/`000000
+00009`3oi[<00540onJc0P0000040?oV/`8000001@3oi[<3000002H0onJc0P0000080?oV/`040000
+003oi[<00000000000<0onJc00@000000?oV/`00000000001P3oi[<200000240onJc0P0000040?oV
+/`800000103oi[<2000000<0onJc00@000000?oV/`00000000000`3oi[<010000000onJc00000000
+000Q0?oV/`800000103oi[<010000000onJc0000000000020?oV/`030000003oi[<0onJc00@0onJc
+0P00000U0?oV/`<000001P3oi[<010000000onJc0000000000030?oV/`040000003oi[<000000000
+00@0onJc0P0000030?oV/`8000005`3oi[<010000000onJc0000000000030?oV/`040000003oi[<0
+0000000000@0onJc00@000000?oV/`00000000000`3oi[<010000000onJc0000000000040?oV/`04
+0000003oi[<00000000000<0onJc00@000000?oV/`00000000009`3oi[<00540onJc0P0000040?oV
+/`8000001@3oi[<2000002L0onJc0P0000080?oV/`<000001@3oi[<3000000<0onJc00<000000?oV
+/`3oi[<00P0000020?oV/`030000003oi[<0onJc01`0onJc0P0000040?oV/`800000103oi[<20000
+00<0onJc0`0000050?oV/`<000008@3oi[<2000000@0onJc0`0000030?oV/`050000003oi[<0onJc
+0?oV/`0000000P3oi[<200000080onJc00<000000?oV/`3oi[<0803oi[<2000000L0onJc0`000005
+0?oV/`<00000103oi[<2000000<0onJc0P00000G0?oV/`<000001@3oi[<3000000@0onJc0`000005
+0?oV/`<00000103oi[<3000000D0onJc0`00000W0?oV/`00D03oi[<8000000L0onJc00<000000?oV
+/`3oi[<0903oi[<4000000H0onJc100000050?oV/`@000000P3oi[<8000001d0onJc100000020?oV
+/`P000000`3oi[<4000000D0onJc1000000O0?oV/`@000000P3oi[<400000080onJc0`0000020?oV
+/`P000008`3oi[<00`000000onJc0?oV/`040?oV/`@000001@3oi[<400000080onJc1P00000H0?oV
+/`@000001@3oi[<400000080onJc100000050?oV/`@000000P3oi[<4000000D0onJc1000000V0?oV
+/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV
+/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00o`3oi[?30?oV/`00=P3oi[?o000007H000005`3oi[<0
+02T0onJc1@0000080?oV/`030000003oi[<0onJc0240onJc00<000000?oV/`3oi[<0>@3oi[<00`00
+0000onJc0?oV/`0i0?oV/`030000003oi[<0onJc03T0onJc00<000000?oV/`3oi[<0>@3oi[<00`00
+0000onJc0?oV/`0i0?oV/`030000003oi[<0onJc03T0onJc000X0?oV/`8000000`3oi[<2000000L0
+onJc00<000000?oV/`3oi[<08@3oi[<00`000000onJc0?oV/`0i0?oV/`030000003oi[<0onJc03T0
+onJc00<000000?oV/`3oi[<0>@3oi[<00`000000onJc0?oV/`0i0?oV/`030000003oi[<0onJc03T0
+onJc00<000000?oV/`3oi[<0>@3oi[<002P0onJc0P0000030?oV/`8000001`3oi[<00`000000onJc
+0?oV/`3o0?oV/hX0onJc000X0?oV/`8000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<0o`3o
+i[>:0?oV/`00:03oi[<2000000<0onJc0P0000070?oV/ol00000MP00000G0?oV/`00:03oi[<20000
+00<0onJc0P0000070?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000X0?oV/`8000000`3oi[<2000000L0
+onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<08@3oi[<002P0onJc0P0000030?oV/`8000001`3oi[<00`000000onJc
+0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00:03oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000Y
+0?oV/`D00000203oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV
+/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3o
+i[<2000000X0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o0000
+0`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<0
+0`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o0000
+0`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<0
+0`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc
+00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc
+000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV
+/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV
+/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV
+/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/c4000002`3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000f0?oV/`8000002P3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3o
+i[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0A@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`150?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240
+onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc04D0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`8000002P3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV
+/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`150?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0240onJc000P0?oV/`H000000`3oi[<5000000P0onJc00<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`008@3oi[<500000080onJc0P0000030?oV/`8000001`3oi[<00`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0A@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0240onJc000R0?oV/`060000003oi[<0onJc0?oV/`00
+0000onJc0P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000S0?oV/`030000003oi[<0onJc0080onJc0P0000030?oV/`8000001`3oi[<00`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0A@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0240onJc000T0?oV/`040000003oi[<0onJc0?oV/`80
+00000`3oi[<2000000L0onJc0`0000090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/c400000A`3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000T0?oV/`040000003oi[<0onJc0?oV/`8000000`3oi[<2000000L0
+onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240
+onJc000T0?oV/`8000000P3oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0onJc00T0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<200000080onJc0P00
+00020?oV/`8000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV
+/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc0240onJc000Q0?oV/`D000000P3oi[<2000000<0onJc0P000007
+0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q
+0?oV/`008P3oi[<3000000@0onJc1@0000080?oV/`030000003oi[<0onJc00T0onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV
+/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0
+2@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000
+;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0
+P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`8000002P3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0
+onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240
+onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV
+/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc0P00000:0?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0
+onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240
+onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV
+/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<2000000X0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00903oi[<20000
+00<0onJc1@0000080?oV/`030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`00903oi[<200000080onJc0P0000030?oV/`8000001`3oi[<00`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<00200onJc
+1`0000000`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<00200onJc1`0000000`3oi[<000000000
+00030?oV/`8000001`3oi[<00`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<08@3oi[<00200onJc00@000000?oV/`3oi[<0onJc0P0000020?oV/`8000000`3o
+i[<2000000L0onJc0`0000090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3o
+i[<00240onJc00<000000?oV/`3oi[<00P0000020?oV/`8000000`3oi[<2000000L0onJc00<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000R0?oV
+/`040000003oi[<0000000000080onJc0P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`09
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`21
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<002<0onJc0`0000020?oV
+/`8000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc0240onJc000T0?oV/`8000000P3oi[<2000000<0onJc0P0000070?oV/`03
+0000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00
+9@3oi[<010000000onJc0?oV/`3oi[<5000000P0onJc00<000000?oV/`3oi[<02@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc00T0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV
+/`090?oV/c4000002`3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`21
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc0P0000160?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV
+/`00=P3oi[<00`000000onJc0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`150?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3o
+i[<00`000000onJc0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`150?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`00
+0000onJc0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`150?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc
+0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<2000004H0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV
+/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc04D0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV
+/`030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc04D0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000
+003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0240onJc000f0?oV/`030000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`090?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc04D0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240
+onJc000f0?oV/`800000AP3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV
+/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<00000
+0?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l0
+00030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV
+/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<00240onJc1@0000030?oV/`D0
+0000203oi[<00`000000onJc0?oV/`150?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<2000000<0onJc0P0000000`3oi[<00000
+000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`150?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<2000000<0onJc0P00
+00000`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`150?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<2
+000000<0onJc0P0000000`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`15
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<02@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q
+0?oV/`00803oi[<2000000<0onJc0P0000000`3oi[<00000000000030?oV/`8000001`3oi[<30000
+04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000P0?oV/`8000000`3oi[<2000000030?oV/`000000000000<0onJc0P0000070?oV/`03
+0000003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000Q0?oV/`D000000P3oi[<2000000<0onJc0P0000070?oV/`030000
+003oi[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000
+003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000
+003oi[<0onJc0240onJc000Q0?oV/`8000001@3oi[<2000000<0onJc0P0000070?oV/`030000003o
+i[<0onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0240onJc000R0?oV/`<000000`3oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0
+onJc04D0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`090?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0
+onJc0240onJc000T0?oV/`<000000P3oi[<5000000P0onJc00<000000?oV/`3oi[<0A@3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0
+onJc00<000000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0
+o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0A@3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc00T0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<0
+00000?oV/`3oi[<0A@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc00T0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<0
+00000?oV/`3oi[<08@3oi[<003H0onJc0P0000160?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<02@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`150?oV
+/c4000002`3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`210?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0840onJc00<000000?l0003o0000
+;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0
+8@3oi[<003H0onJc00<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<0
+0`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<0
+0`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc
+0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0P@3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc
+000f0?oV/`800000PP3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`21
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0840onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV
+/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00
+=P3oi[<00`000000onJc0?oV/`210?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<0
+P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003o
+i[<0onJc0840onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`210?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0P@3oi[<0
+0`000000o`000?l0000]0?l000030000003oi[<0onJc0840onJc00<000000?l0003o0000;@3o0000
+0`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`210?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<0P@3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000f0?oV/`800000PP3oi[<a000008<0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000
+;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o
+0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`00
+0000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV
+/`008@3oi[<5000000<0onJc1@0000080?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000
+o`000?l0000]0?l000030000003oi[<0onJc0240onJc000P0?oV/`8000000`3oi[<2000000030?oV
+/`000000000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0240onJc000P0?oV/`8000000`3oi[<2000000030?oV/`00
+0000000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc0240onJc000Q0?oV/`030000003oi[<0onJc00<0000000<0onJc
+0000000000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000
+o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<00280onJc100000020?oV/`8000000`3oi[<20000
+00L0onJc0`00003o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV
+/`008@3oi[<4000000<0onJc0P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0
+onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<300000080onJc
+00<000000?oV/`3oi[<00P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<2000000<0onJc0P00
+00000`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<0
+00000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00803oi[<2000000<0onJc0P000000
+0`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`008@3oi[<5000000<0onJc1@0000080?oV
+/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`800000o`3oi[<g0?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV
+/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0
+onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o
+0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV
+/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0
+onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3o
+i[<08@3oi[<003H0onJc0P00003o0?oV/cL0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV
+/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000
+onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00
+=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV
+/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<200000?l0
+onJc=`3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000
+003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc
+000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000I0?oV/`H000000P3oi[<5000000<0onJc1@0000080?oV
+/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000K0?oV/`8000000`3oi[<2000000<0onJc0P0000000`3oi[<00000000000030?oV/`80
+00001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000
+onJc0?oV/`0Q0?oV/`006`3oi[<2000000<0onJc0P0000030?oV/`80000000<0onJc000000000000
+0`3oi[<2000000L0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`00
+00<000000?oV/`3oi[<08@3oi[<001/0onJc0P0000030?oV/`8000000`3oi[<2000000030?oV/`00
+0000000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0
+000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000000`3oi[<2000000<0onJc0P000000
+0`3oi[<00000000000030?oV/`8000001`3oi[<300000?l0onJc=P3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000000`3oi[<2000000<0onJc0P0000000`3o
+i[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0
+003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`006`3oi[<2000000<0onJc0P0000030?oV/`80
+000000<0onJc0000000000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<001/0onJc0P0000030?oV/`800000
+0`3oi[<2000000030?oV/`000000000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc
+=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000000`3o
+i[<2000000<0onJc0P0000000`3oi[<00000000000030?oV/`8000001`3oi[<00`000000onJc0?oV
+/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`006@3oi[<4
+000000@0onJc1@0000030?oV/`D00000203oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<00000
+0?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV
+/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000
+onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00
+=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc
+0?oV/`0Q0?oV/`00=P3oi[<200000?l0onJc=`3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0
+onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000
+003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc
+000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003o
+i[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]
+0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`800000o`3oi[<g0?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0
+o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<0
+00000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3o
+i[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`00
+02d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`03
+0000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<000000?oV/`3oi[<0
+o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<003H0onJc00<0
+00000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3o
+i[<003H0onJc00<000000?oV/`3oi[<0o`3oi[<f0?oV/`030000003o0000o`0002d0o`0000<00000
+0?oV/`3oi[<08@3oi[<003H0onJc0P00003o0?oV/cL0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV
+/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`006@3oi[<6
+000000030?oV/`000000000000@000000`3oi[<5000000P0onJc00<000000?oV/`3oi[<0o`3oi[<f
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<001/0onJc0P0000040?oV
+/`D000000P3oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000001@3oi[<01P000000
+onJc0?oV/`3oi[<000000?oV/`8000000`3oi[<2000000L0onJc00<000000?oV/`3oi[<0o`3oi[<f
+0?oV/`030000003o0000o`0002d0o`0000<000000?oV/`3oi[<08@3oi[<001/0onJc0P0000060?oV
+/`030000003oi[<0onJc0080onJc0P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV
+/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`006`3oi[<2000000L0
+onJc00@000000?oV/`3oi[<0onJc0P0000030?oV/`8000001`3oi[<300000?l0onJc=P3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000001`3oi[<010000000
+onJc0?oV/`3oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`00
+0000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`8000001`3oi[<200000080
+onJc0P0000030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`006`3oi[<2000000<0onJc0P0000020?oV/`800000
+0P3oi[<2000000<0onJc0P0000070?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`00
+0?l0000]0?l000030000003oi[<0onJc0240onJc000K0?oV/`800000103oi[<500000080onJc0P00
+00030?oV/`8000001`3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o
+00000`000000onJc0?oV/`0Q0?oV/`006@3oi[<4000000D0onJc0`0000040?oV/`D00000203oi[<0
+0`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q
+0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o0000;@3o00000`00
+0000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc00<000000?l0003o
+0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/cH0onJc
+00<000000?l0003o0000;@3o00000`000000onJc0?oV/`0Q0?oV/`00=P3oi[<200000?l0onJc=`3o
+i[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0
+onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc0240onJc000f0?oV
+/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l000030000003oi[<0onJc
+0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<00`000000o`000?l0000]0?l00003
+0000003oi[<0onJc0240onJc000f0?oV/`030000003oi[<0onJc0?l0onJc=P3oi[<a000002<0onJc
+000f0?oV/`030000003oi[<0onJc0?l0onJcRP3oi[<003H0onJc00<000000?oV/`3oi[<0o`3oi[>:
+0?oV/`00=P3oi[<00`000000onJc0?oV/`3o0?oV/hX0onJc000f0?oV/`030000003oi[<0onJc0?l0
+onJcRP3oi[<003H0onJc0P00003o0?oV/h/0onJc000f0?oV/`030000003oi[<0onJc0?l0onJcRP3o
+i[<00?l0onJc``3oi[<00?l0onJc``3oi[<00?l0onJc``3oi[<00?l0onJc``3oi[<00?l0onJc``3o
+i[<00?l0onJc``3oi[<00;/0onJc0`00002=0?oV/`<00000M03oi[<00;X0onJc0P00002?0?oV/`80
+000000<0onJc0000003oi[<0LP3oi[<00;T0onJc0P00002C0?oV/`030000003oi[<0onJc0740onJc
+002=0?oV/`030000003oi[<0000000800000103oi[<2000000<0onJc100000040?oV/`<000000P3o
+i[<4000000030?oV/`0000000000008000001`3oi[<4000000H0onJc1P0000020?oV/`@00000103o
+i[<2000000<0onJc100000030?oV/`@000000P3oi[<8000000@0onJc100000020?oV/`@0000000D0
+onJc00000000000000000?oV/`03000000D0onJc100000000`3oi[<0000000000003000000040?oV
+/`000000000000000080onJc00@000000?oV/`3oi[<0onJc100000020?oV/`L000001@3oi[<40000
+00D0onJc100000040?oV/`H0000000<0onJc000000000000100000030?oV/`030000003oi[<0onJc
+0740onJc002=0?oV/`8000000P3oi[<200000080onJc0P0000000`3oi[<000000?oV/`0200000080
+onJc0P0000020?oV/`8000000P3oi[<00`000000onJc0?oV/`0200000080onJc0P0000070?oV/`80
+0000103oi[<2000000<0onJc0P0000020?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`80
+000000<0onJc0000003oi[<00P0000030?oV/`040000003oi[<0onJc00000080onJc0P0000020?oV
+/`8000000P3oi[<2000000@0onJc0P0000020?oV/`8000000P3oi[<200000080onJc0P0000020?oV
+/`8000001`3oi[<2000000<0onJc0P0000040?oV/`040000003oi[<0onJc0?oV/`8000000`3oi[<2
+000000@0onJc0P0000030?oV/`8000001@3oi[<2000000D0onJc0P0000020?oV/`8000000P3oi[<2
+00000080onJc0P0000000`3oi[<00000000000020?oV/`800000103oi[<200000780onJc002=0?oV
+/`040000003oi[<0onJc0?oV/`8000000P3oi[<2000000<0onJc0P0000020?oV/`8000000P3oi[<2
+000000D0onJc0P0000000`3oi[<00000000000080?oV/`800000103oi[<2000000<0onJc0P000002
+0?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`8000000`3oi[<2000000P0onJc0`000002
+0?oV/`8000000P3oi[<2000000@0onJc0P0000020?oV/`8000000P3oi[<200000080onJc0P000002
+0?oV/`8000002@3oi[<010000000onJc0000000000050?oV/`030000003oi[<0onJc00<000000`3o
+i[<2000000@0onJc0P0000040?oV/`030000003oi[<0onJc00<0onJc0P0000050?oV/`8000000P3o
+i[<200000080onJc0P0000020?oV/`80000000<0onJc0000000000000P3oi[<2000000<0onJc0`00
+001b0?oV/`00S@3oi[<00`000000onJc0?oV/`0300000080onJc0P0000030?oV/`8000000P3oi[<2
+00000080onJc0P0000050?oV/`@00000203oi[<2000000H0onJc0P0000020?oV/`8000000P3oi[<2
+00000080onJc0P0000020?oV/`8000000P3oi[<2000000<0onJc1P0000030?oV/`<000000`3oi[<2
+00000080onJc0P0000040?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`8000000P3oi[<2
+000000T0onJc00@000000?oV/`00000000001@3oi[<00`000000onJc0?oV/`02000000040?oV/`00
+0000onJc0?oV/`800000103oi[<2000000@0onJc00<000000?oV/`3oi[<00`3oi[<2000000D0onJc
+0P0000020?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`80000000<0onJc000000000000
+0`3oi[<300000780onJc002?0?oV/`<000000`3oi[<2000000<0onJc0P0000020?oV/`8000000P3o
+i[<2000000D0onJc0P0000000`3oi[<000000?oV/`070?oV/`8000001P3oi[<200000080onJc0P00
+00020?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`8000000`3oi[<200000080onJc0P00
+00020?oV/`<00000103oi[<200000080onJc0P0000040?oV/`8000000P3oi[<200000080onJc0P00
+00020?oV/`8000000P3oi[<2000000X0onJc0P0000060?oV/`030000003oi[<0onJc0080000000@0
+onJc0000003oi[<0onJc0P0000040?oV/`8000002P3oi[<2000000D0onJc0P0000020?oV/`800000
+0P3oi[<200000080onJc0P0000040?oV/`<000000P3oi[<200000080onJc00<000000?oV/`3oi[<0
+K`3oi[<008h0onJc0`0000040?oV/`8000000`3oi[<200000080onJc0P0000020?oV/`80000000<0
+onJc0000000000000P3oi[<200000080onJc00<000000?oV/`3oi[<01@3oi[<2000000H0onJc0P00
+00020?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`8000000P3oi[<2000000<0onJc0P00
+00020?oV/`8000000P3oi[<200000080onJc00<000000?oV/`3oi[<00P0000020?oV/`<0000000<0
+onJc0000003oi[<00P0000020?oV/`8000000P3oi[<3000000030?oV/`00000000000080onJc0P00
+00090?oV/`<000001P3oi[<010000000onJc0000000000020?oV/`030000003oi[<0onJc00800000
+103oi[<2000000X0onJc0P0000050?oV/`8000000P3oi[<200000080onJc0P0000020?oV/`800000
+00<0onJc0000000000000P3oi[<200000080onJc0P0000020?oV/`030000003oi[<0onJc06l0onJc
+002=0?oV/`<00000103oi[<500000080onJc100000040?oV/`@000000P3oi[<200000080onJc0`00
+00050?oV/`8000001P3oi[<2000000050?oV/`00000000000000003oi[<00`0000030?oV/`@00000
+0P3oi[<500000080onJc100000040?oV/`@0000000<0onJc0000000000001@0000000`3oi[<00000
+000000020?oV/`@000000P3oi[<3000000040?oV/`00000000000?oV/`<000002P3oi[<200000003
+0?oV/`000000onJc00@0onJc00@000000?oV/`00000000000`3oi[<010000000onJc000000000004
+0?oV/`8000002P3oi[<2000000H0onJc100000040?oV/`D000000P3oi[<400000080onJc0`000000
+103oi[<0000000000000001`0?oV/`00S@3oi[<2000000<0onJc00<000000?oV/`3oi[<00P00000B
+0?oV/`8000002`3oi[<2000000@0onJc0P00000C0?oV/`8000004P3oi[<200000280onJc0P000002
+0?oV/`030000003oi[<0onJc00<0onJc00@000000?oV/`00000000000`3oi[<010000000onJc0000
+000000040?oV/`8000002P3oi[<200000140onJc0P00001o0?oV/`00S@3oi[<200000080onJc0P00
+00030?oV/`030000003oi[<0onJc0100onJc0P00000;0?oV/`800000103oi[<2000001@0onJc00<0
+00000?oV/`3oi[<0403oi[<2000000030?oV/`000000000001h0onJc0P0000040?oV/`8000000`3o
+i[<3000000D0onJc0`0000040?oV/`8000001`3oi[<00`000000onJc0?oV/`0200000080onJc00<0
+00000?oV/`3oi[<0303oi[<2000007l0onJc002>0?oV/`<0000000<0onJc0000003oi[<0503oi[<3
+000000d0onJc1000000Z0?oV/`@000007@3oi[<5000000030?oV/`00000000000080000000<0onJc
+0000000000000P0000050?oV/`@000000P3oi[<4000000H0onJc2000000=0?oV/`<00000O`3oi[<0
+0?l0onJc``3oi[<00?l0onJc``3oi[<00?l0onJc``3oi[<00?l0onJc``3oi[<00001\
+\>"],
+  ImageRangeCache->{{{0, 449}, {277.063, 0}} -> {-0.503179, -16.9308, \
+0.0166682, 0.582579}}]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"4.2 for Microsoft Windows",
+ScreenRectangle->{{0, 1024}, {0, 695}},
+WindowSize->{1016, 668},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+StyleDefinitions -> Notebook[{
+  
+  Cell[CellGroupData[{
+  Cell["Style Definitions", "Subtitle"],
+  
+  Cell["\<\
+Modify the definitions below to change the default appearance of \
+all cells in a given style.  Make modifications to any definition using \
+commands in the Format menu.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Style Environment Names", "Section"],
+  
+  Cell[StyleData[All, "Working"],
+    PageWidth->WindowWidth,
+    CellLabelMargins->{{12, Inherited}, {Inherited, Inherited}},
+    ScriptMinSize->9],
+  
+  Cell[StyleData[All, "Presentation"],
+    PageWidth->WindowWidth,
+    CellLabelMargins->{{24, Inherited}, {Inherited, Inherited}},
+    ScriptMinSize->12],
+  
+  Cell[StyleData[All, "Condensed"],
+    PageWidth->WindowWidth,
+    CellLabelMargins->{{8, Inherited}, {Inherited, Inherited}},
+    ScriptMinSize->8],
+  
+  Cell[StyleData[All, "Printout"],
+    PageWidth->PaperWidth,
+    CellLabelMargins->{{2, Inherited}, {Inherited, Inherited}},
+    ScriptMinSize->5,
+    PrivateFontOptions->{"FontType"->"Outline"}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Notebook Options", "Section"],
+  
+  Cell["\<\
+The options defined for the style below will be used at the \
+Notebook level.\
+\>", "Text"],
+  
+  Cell[StyleData["Notebook"],
+    PageHeaders->{{Cell[ 
+            TextData[ {
+              CounterBox[ "Page"]}], "PageNumber"], None, Cell[ 
+            TextData[ {
+              ValueBox[ "FileName"]}], "Header"]}, {Cell[ 
+            TextData[ {
+              ValueBox[ "FileName"]}], "Header"], None, Cell[ 
+            TextData[ {
+              CounterBox[ "Page"]}], "PageNumber"]}},
+    CellFrameLabelMargins->6,
+    StyleMenuListing->None,
+    Background->RGBColor[1, 0.900008, 0.700008]]
+  }, Open  ]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Headings", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Title"],
+    CellMargins->{{0, 0}, {0, 0}},
+    CellGroupingRules->{"TitleGrouping", 0},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{1, 11},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Title",
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}, {
+        "Subtitle", 0}, {"Subsubtitle", 0}},
+    FontFamily->"Times",
+    FontSize->36,
+    FontWeight->"Bold",
+    FontColor->GrayLevel[0.900008],
+    Background->RGBColor[0.2, 0.2, 0.700008]],
+  
+  Cell[StyleData["Title", "Presentation"],
+    CellMargins->{{24, 10}, {20, 40}},
+    LineSpacing->{1, 0},
+    FontSize->44],
+  
+  Cell[StyleData["Title", "Condensed"],
+    CellMargins->{{8, 10}, {4, 8}},
+    FontSize->20],
+  
+  Cell[StyleData["Title", "Printout"],
+    CellMargins->{{2, 10}, {12, 30}},
+    FontSize->24]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subtitle"],
+    CellMargins->{{0, 0}, {0, 0}},
+    CellGroupingRules->{"TitleGrouping", 10},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Subtitle",
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}, {
+        "Subsubtitle", 0}},
+    FontFamily->"Helvetica",
+    FontSize->18,
+    FontColor->GrayLevel[0.900008],
+    Background->GrayLevel[0]],
+  
+  Cell[StyleData["Subtitle", "Presentation"],
+    CellMargins->{{24, 10}, {20, 20}},
+    LineSpacing->{1, 0},
+    FontSize->36],
+  
+  Cell[StyleData["Subtitle", "Condensed"],
+    CellMargins->{{8, 10}, {4, 4}},
+    FontSize->14],
+  
+  Cell[StyleData["Subtitle", "Printout"],
+    CellMargins->{{2, 10}, {12, 8}},
+    FontSize->18]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsubtitle"],
+    CellMargins->{{12, Inherited}, {20, 15}},
+    CellGroupingRules->{"TitleGrouping", 20},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Subsubtitle",
+    CounterAssignments->{{"Section", 0}, {"Equation", 0}, {"Figure", 0}},
+    FontFamily->"Helvetica",
+    FontSize->14,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["Subsubtitle", "Presentation"],
+    CellMargins->{{24, 10}, {20, 20}},
+    LineSpacing->{1, 0},
+    FontSize->24],
+  
+  Cell[StyleData["Subsubtitle", "Condensed"],
+    CellMargins->{{8, 10}, {8, 8}},
+    FontSize->12],
+  
+  Cell[StyleData["Subsubtitle", "Printout"],
+    CellMargins->{{2, 10}, {12, 8}},
+    FontSize->14]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Section"],
+    CellMargins->{{25, Inherited}, {8, 24}},
+    CellGroupingRules->{"SectionGrouping", 30},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LineSpacing->{1, 7},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Section",
+    CounterAssignments->{{"Subsection", 0}, {"Subsubsection", 0}},
+    FontFamily->"Helvetica",
+    FontSize->16,
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Section", "Presentation"],
+    CellMargins->{{40, 10}, {11, 32}},
+    LineSpacing->{1, 0},
+    FontSize->24],
+  
+  Cell[StyleData["Section", "Condensed"],
+    CellMargins->{{18, Inherited}, {6, 12}},
+    FontSize->12],
+  
+  Cell[StyleData["Section", "Printout"],
+    CellMargins->{{13, 0}, {7, 22}},
+    FontSize->14]
+  }, Open  ]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsection"],
+    CellDingbat->"\[FilledSmallSquare]",
+    CellMargins->{{22, Inherited}, {8, 20}},
+    CellGroupingRules->{"SectionGrouping", 40},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Subsection",
+    CounterAssignments->{{"Subsubsection", 0}},
+    FontFamily->"Times",
+    FontSize->14,
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Subsection", "Presentation"],
+    CellMargins->{{36, 10}, {11, 32}},
+    LineSpacing->{1, 0},
+    FontSize->22],
+  
+  Cell[StyleData["Subsection", "Condensed"],
+    CellMargins->{{16, Inherited}, {6, 12}},
+    FontSize->12],
+  
+  Cell[StyleData["Subsection", "Printout"],
+    CellMargins->{{9, 0}, {7, 22}},
+    FontSize->12]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Subsubsection"],
+    CellDingbat->"\[FilledSmallSquare]",
+    CellMargins->{{22, Inherited}, {8, 18}},
+    CellGroupingRules->{"SectionGrouping", 50},
+    PageBreakBelow->False,
+    DefaultNewInlineCellStyle->"None",
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"Subsubsection",
+    FontFamily->"Times",
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Subsubsection", "Presentation"],
+    CellMargins->{{34, 10}, {11, 26}},
+    LineSpacing->{1, 0},
+    FontSize->18],
+  
+  Cell[StyleData["Subsubsection", "Condensed"],
+    CellMargins->{{17, Inherited}, {6, 12}},
+    FontSize->10],
+  
+  Cell[StyleData["Subsubsection", "Printout"],
+    CellMargins->{{9, 0}, {7, 14}},
+    FontSize->11]
+  }, Closed]]
+  }, Open  ]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Body Text", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Text"],
+    CellMargins->{{12, 10}, {7, 7}},
+    InputAutoReplacements->{"TeX"->StyleBox[ 
+            RowBox[ {"T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "LaTeX"->StyleBox[ 
+            RowBox[ {"L", 
+              StyleBox[ 
+                AdjustmentBox[ 
+                "A", BoxMargins -> {{-0.36, -0.1}, {0, -0}}, 
+                  BoxBaselineShift -> -0.2], FontSize -> Smaller], "T", 
+              AdjustmentBox[ 
+              "E", BoxMargins -> {{-0.075, -0.085}, {0, 0}}, BoxBaselineShift -> 
+                0.5], "X"}]], "mma"->"Mathematica", "Mma"->"Mathematica", 
+        "MMA"->"Mathematica", Inherited},
+    Hyphenation->True,
+    LineSpacing->{1, 3},
+    CounterIncrements->"Text"],
+  
+  Cell[StyleData["Text", "Presentation"],
+    CellMargins->{{24, 10}, {10, 10}},
+    LineSpacing->{1, 5},
+    FontSize->16],
+  
+  Cell[StyleData["Text", "Condensed"],
+    CellMargins->{{8, 10}, {6, 6}},
+    LineSpacing->{1, 1},
+    FontSize->11],
+  
+  Cell[StyleData["Text", "Printout"],
+    CellMargins->{{2, 2}, {6, 6}},
+    TextJustification->0.5,
+    FontSize->10]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["SmallText"],
+    CellMargins->{{12, 10}, {6, 6}},
+    DefaultNewInlineCellStyle->"None",
+    Hyphenation->True,
+    LineSpacing->{1, 3},
+    LanguageCategory->"NaturalLanguage",
+    CounterIncrements->"SmallText",
+    FontFamily->"Helvetica",
+    FontSize->9],
+  
+  Cell[StyleData["SmallText", "Presentation"],
+    CellMargins->{{24, 10}, {8, 8}},
+    LineSpacing->{1, 5},
+    FontSize->12],
+  
+  Cell[StyleData["SmallText", "Condensed"],
+    CellMargins->{{8, 10}, {5, 5}},
+    LineSpacing->{1, 2},
+    FontSize->9],
+  
+  Cell[StyleData["SmallText", "Printout"],
+    CellMargins->{{2, 2}, {5, 5}},
+    TextJustification->0.5,
+    FontSize->7]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Input/Output", "Section"],
+  
+  Cell["\<\
+The cells in this section define styles used for input and output \
+to the kernel.  Be careful when modifying, renaming, or removing these \
+styles, because the front end associates special meanings with these style \
+names. Some attributes for these styles are actually set in FormatType Styles \
+(in the last section of this stylesheet). \
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Input"],
+    CellMargins->{{45, 10}, {5, 7}},
+    Evaluatable->True,
+    CellGroupingRules->"InputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    DefaultFormatType->DefaultInputFormatType,
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->"Mathematica",
+    FormatType->InputForm,
+    ShowStringCharacters->True,
+    NumberMarks->True,
+    LinebreakAdjustments->{0.85, 2, 10, 0, 1},
+    CounterIncrements->"Input",
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["Input", "Presentation"],
+    CellMargins->{{72, Inherited}, {8, 10}},
+    LineSpacing->{1, 0},
+    FontSize->16],
+  
+  Cell[StyleData["Input", "Condensed"],
+    CellMargins->{{40, 10}, {2, 3}},
+    FontSize->11],
+  
+  Cell[StyleData["Input", "Printout"],
+    CellMargins->{{39, 0}, {4, 6}},
+    LinebreakAdjustments->{0.85, 2, 10, 1, 1},
+    FontSize->9]
+  }, Closed]],
+  
+  Cell[StyleData["InputOnly"],
+    Evaluatable->True,
+    CellGroupingRules->"InputGrouping",
+    CellHorizontalScrolling->True,
+    DefaultFormatType->DefaultInputFormatType,
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->"Mathematica",
+    FormatType->InputForm,
+    ShowStringCharacters->True,
+    NumberMarks->True,
+    LinebreakAdjustments->{0.85, 2, 10, 0, 1},
+    CounterIncrements->"Input",
+    StyleMenuListing->None,
+    FontWeight->"Bold"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Output"],
+    CellMargins->{{47, 10}, {7, 5}},
+    CellEditDuplicate->True,
+    CellGroupingRules->"OutputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    DefaultFormatType->DefaultOutputFormatType,
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->None,
+    FormatType->InputForm,
+    CounterIncrements->"Output"],
+  
+  Cell[StyleData["Output", "Presentation"],
+    CellMargins->{{72, Inherited}, {10, 8}},
+    LineSpacing->{1, 0},
+    FontSize->16],
+  
+  Cell[StyleData["Output", "Condensed"],
+    CellMargins->{{41, Inherited}, {3, 2}},
+    FontSize->11],
+  
+  Cell[StyleData["Output", "Printout"],
+    CellMargins->{{39, 0}, {6, 4}},
+    FontSize->9]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Message"],
+    CellMargins->{{45, Inherited}, {Inherited, Inherited}},
+    CellGroupingRules->"OutputGrouping",
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    DefaultFormatType->DefaultOutputFormatType,
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->None,
+    FormatType->InputForm,
+    CounterIncrements->"Message",
+    StyleMenuListing->None,
+    FontSize->11,
+    FontColor->RGBColor[0, 0, 1]],
+  
+  Cell[StyleData["Message", "Presentation"],
+    CellMargins->{{72, Inherited}, {Inherited, Inherited}},
+    LineSpacing->{1, 0},
+    FontSize->16],
+  
+  Cell[StyleData["Message", "Condensed"],
+    CellMargins->{{41, Inherited}, {Inherited, Inherited}},
+    FontSize->11],
+  
+  Cell[StyleData["Message", "Printout"],
+    CellMargins->{{39, Inherited}, {Inherited, Inherited}},
+    FontSize->7,
+    FontColor->GrayLevel[0]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Print"],
+    CellMargins->{{45, Inherited}, {Inherited, Inherited}},
+    CellGroupingRules->"OutputGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GroupPageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    DefaultFormatType->DefaultOutputFormatType,
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    AutoItalicWords->{},
+    LanguageCategory->None,
+    FormatType->InputForm,
+    CounterIncrements->"Print",
+    StyleMenuListing->None],
+  
+  Cell[StyleData["Print", "Presentation"],
+    CellMargins->{{72, Inherited}, {Inherited, Inherited}},
+    LineSpacing->{1, 0},
+    FontSize->16],
+  
+  Cell[StyleData["Print", "Condensed"],
+    CellMargins->{{41, Inherited}, {Inherited, Inherited}},
+    FontSize->11],
+  
+  Cell[StyleData["Print", "Printout"],
+    CellMargins->{{39, Inherited}, {Inherited, Inherited}},
+    FontSize->8]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Graphics"],
+    CellMargins->{{4, Inherited}, {Inherited, Inherited}},
+    CellGroupingRules->"GraphicsGrouping",
+    CellHorizontalScrolling->True,
+    PageBreakWithin->False,
+    GeneratedCell->True,
+    CellAutoOverwrite->True,
+    ShowCellLabel->False,
+    DefaultFormatType->DefaultOutputFormatType,
+    LanguageCategory->None,
+    FormatType->InputForm,
+    CounterIncrements->"Graphics",
+    ImageMargins->{{43, Inherited}, {Inherited, 0}},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontSize->10],
+  
+  Cell[StyleData["Graphics", "Presentation"],
+    ImageMargins->{{62, Inherited}, {Inherited, 0}}],
+  
+  Cell[StyleData["Graphics", "Condensed"],
+    ImageMargins->{{38, Inherited}, {Inherited, 0}},
+    Magnification->0.6],
+  
+  Cell[StyleData["Graphics", "Printout"],
+    ImageMargins->{{30, Inherited}, {Inherited, 0}},
+    Magnification->0.8]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["CellLabel"],
+    LanguageCategory->None,
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->9,
+    FontColor->RGBColor[0, 0, 1]],
+  
+  Cell[StyleData["CellLabel", "Presentation"],
+    FontSize->12],
+  
+  Cell[StyleData["CellLabel", "Condensed"],
+    FontSize->9],
+  
+  Cell[StyleData["CellLabel", "Printout"],
+    FontFamily->"Courier",
+    FontSize->8,
+    FontSlant->"Italic",
+    FontColor->GrayLevel[0]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["FrameLabel"],
+    LanguageCategory->None,
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->9],
+  
+  Cell[StyleData["FrameLabel", "Presentation"],
+    FontSize->12],
+  
+  Cell[StyleData["FrameLabel", "Condensed"],
+    FontSize->9],
+  
+  Cell[StyleData["FrameLabel", "Printout"],
+    FontFamily->"Courier",
+    FontSize->8,
+    FontSlant->"Italic",
+    FontColor->GrayLevel[0]]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Inline Formatting", "Section"],
+  
+  Cell["\<\
+These styles are for modifying individual words or letters in a \
+cell exclusive of the cell tag.\
+\>", "Text"],
+  
+  Cell[StyleData["RM"],
+    StyleMenuListing->None,
+    FontWeight->"Plain",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["BF"],
+    StyleMenuListing->None,
+    FontWeight->"Bold"],
+  
+  Cell[StyleData["IT"],
+    StyleMenuListing->None,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["TR"],
+    StyleMenuListing->None,
+    FontFamily->"Times",
+    FontWeight->"Plain",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["TI"],
+    StyleMenuListing->None,
+    FontFamily->"Times",
+    FontWeight->"Plain",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["TB"],
+    StyleMenuListing->None,
+    FontFamily->"Times",
+    FontWeight->"Bold",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["TBI"],
+    StyleMenuListing->None,
+    FontFamily->"Times",
+    FontWeight->"Bold",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["MR"],
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontWeight->"Plain",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["MO"],
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontWeight->"Plain",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["MB"],
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontWeight->"Bold",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["MBO"],
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontWeight->"Bold",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["SR"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontWeight->"Plain",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["SO"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontWeight->"Plain",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["SB"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontWeight->"Bold",
+    FontSlant->"Plain"],
+  
+  Cell[StyleData["SBO"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontWeight->"Bold",
+    FontSlant->"Italic"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["SO10"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->10,
+    FontWeight->"Plain",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["SO10", "Printout"],
+    StyleMenuListing->None,
+    FontFamily->"Helvetica",
+    FontSize->7,
+    FontWeight->"Plain",
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["SO10", "EnhancedPrintout"],
+    StyleMenuListing->None,
+    FontFamily->"Futura",
+    FontSize->7,
+    FontWeight->"Plain",
+    FontSlant->"Italic"]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Formulas and Programming", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["InlineFormula"],
+    CellMargins->{{10, 4}, {0, 8}},
+    CellHorizontalScrolling->True,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    LanguageCategory->"Formula",
+    ScriptLevel->1,
+    SingleLetterItalics->True],
+  
+  Cell[StyleData["InlineFormula", "Presentation"],
+    CellMargins->{{24, 10}, {10, 10}},
+    LineSpacing->{1, 5},
+    FontSize->16],
+  
+  Cell[StyleData["InlineFormula", "Condensed"],
+    CellMargins->{{8, 10}, {6, 6}},
+    LineSpacing->{1, 1},
+    FontSize->11],
+  
+  Cell[StyleData["InlineFormula", "Printout"],
+    CellMargins->{{2, 0}, {6, 6}},
+    FontSize->10]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["DisplayFormula"],
+    CellMargins->{{42, Inherited}, {Inherited, Inherited}},
+    CellHorizontalScrolling->True,
+    DefaultFormatType->DefaultInputFormatType,
+    HyphenationOptions->{"HyphenationCharacter"->"\[Continuation]"},
+    LanguageCategory->"Formula",
+    ScriptLevel->0,
+    SingleLetterItalics->True,
+    UnderoverscriptBoxOptions->{LimitsPositioning->True}],
+  
+  Cell[StyleData["DisplayFormula", "Presentation"],
+    LineSpacing->{1, 5},
+    FontSize->16],
+  
+  Cell[StyleData["DisplayFormula", "Condensed"],
+    LineSpacing->{1, 1},
+    FontSize->11],
+  
+  Cell[StyleData["DisplayFormula", "Printout"],
+    FontSize->10]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Program"],
+    CellFrame->{{0, 0}, {0.5, 0.5}},
+    CellMargins->{{10, 4}, {0, 8}},
+    CellHorizontalScrolling->True,
+    Hyphenation->False,
+    LanguageCategory->"Formula",
+    ScriptLevel->1,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["Program", "Presentation"],
+    CellMargins->{{24, 10}, {10, 10}},
+    LineSpacing->{1, 5},
+    FontSize->16],
+  
+  Cell[StyleData["Program", "Condensed"],
+    CellMargins->{{8, 10}, {6, 6}},
+    LineSpacing->{1, 1},
+    FontSize->11],
+  
+  Cell[StyleData["Program", "Printout"],
+    CellMargins->{{2, 0}, {6, 6}},
+    FontSize->9]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Outline Styles", "Section"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Outline1"],
+    CellMargins->{{12, 10}, {7, 7}},
+    CellGroupingRules->{"SectionGrouping", 50},
+    ParagraphIndent->-38,
+    CounterIncrements->"Outline1",
+    FontSize->18,
+    FontWeight->"Bold",
+    CounterBoxOptions->{CounterFunction:>CapitalRomanNumeral}],
+  
+  Cell[StyleData["Outline1", "Printout"],
+    CounterBoxOptions->{CounterFunction:>CapitalRomanNumeral}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Outline2"],
+    CellMargins->{{59, 10}, {7, 7}},
+    CellGroupingRules->{"SectionGrouping", 60},
+    ParagraphIndent->-27,
+    CounterIncrements->"Outline2",
+    FontSize->15,
+    FontWeight->"Bold",
+    CounterBoxOptions->{CounterFunction:>(Part[ 
+        CharacterRange[ "A", "Z"], #]&)}],
+  
+  Cell[StyleData["Outline2", "Printout"],
+    CounterBoxOptions->{CounterFunction:>(Part[ 
+        CharacterRange[ "A", "Z"], #]&)}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Outline3"],
+    CellMargins->{{108, 10}, {7, 7}},
+    CellGroupingRules->{"SectionGrouping", 70},
+    ParagraphIndent->-21,
+    CounterIncrements->"Outline3",
+    FontSize->12,
+    CounterBoxOptions->{CounterFunction:>Identity}],
+  
+  Cell[StyleData["Outline3", "Printout"],
+    CounterBoxOptions->{CounterFunction:>Identity}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Outline4"],
+    CellMargins->{{158, 10}, {7, 7}},
+    CellGroupingRules->{"SectionGrouping", 80},
+    ParagraphIndent->-18,
+    CounterIncrements->"Outline4",
+    FontSize->10,
+    CounterBoxOptions->{CounterFunction:>(Part[ 
+        CharacterRange[ "a", "z"], #]&)}],
+  
+  Cell[StyleData["Outline4", "Printout"]]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Hyperlink Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles useful for making hypertext \
+ButtonBoxes.  The \"Hyperlink\" style is for links within the same Notebook, \
+or between Notebooks.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Hyperlink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookLocate[ #2]}]&),
+    Active->True,
+    ButtonFrame->"None",
+    ButtonNote->ButtonData}],
+  
+  Cell[StyleData["Hyperlink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["Hyperlink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["Hyperlink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell["\<\
+The following styles are for linking automatically to the on-line \
+help system.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["MainBookLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "MainBook", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["MainBookLink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["MainBookLink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["MainBookLink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["AddOnsLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontFamily->"Courier",
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "AddOns", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["AddOnsLink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["AddOnsLink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["AddOnsLink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["RefGuideLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontFamily->"Courier",
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "RefGuide", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["RefGuideLink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["RefGuideLink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["RefGuideLink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["GettingStartedLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "GettingStarted", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["GettingStartedLink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["GettingStartedLink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["GettingStartedLink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["OtherInformationLink"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    FontColor->RGBColor[0, 0, 1],
+    FontVariations->{"Underline"->True},
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`HelpBrowserLookup[ "OtherInformation", #]}]&),
+    Active->True,
+    ButtonFrame->"None"}],
+  
+  Cell[StyleData["OtherInformationLink", "Presentation"],
+    FontSize->16],
+  
+  Cell[StyleData["OtherInformationLink", "Condensed"],
+    FontSize->11],
+  
+  Cell[StyleData["OtherInformationLink", "Printout"],
+    FontSize->10,
+    FontColor->GrayLevel[0],
+    FontVariations->{"Underline"->False}]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Styles for Headers and Footers", "Section"],
+  
+  Cell[StyleData["Header"],
+    CellMargins->{{0, 0}, {4, 1}},
+    DefaultNewInlineCellStyle->"None",
+    LanguageCategory->"NaturalLanguage",
+    StyleMenuListing->None,
+    FontSize->10,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["Footer"],
+    CellMargins->{{0, 0}, {0, 4}},
+    DefaultNewInlineCellStyle->"None",
+    LanguageCategory->"NaturalLanguage",
+    StyleMenuListing->None,
+    FontSize->9,
+    FontSlant->"Italic"],
+  
+  Cell[StyleData["PageNumber"],
+    CellMargins->{{0, 0}, {4, 1}},
+    StyleMenuListing->None,
+    FontFamily->"Times",
+    FontSize->10]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Palette Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles that define standard \
+ButtonFunctions, for use in palette buttons.\
+\>", "Text"],
+  
+  Cell[StyleData["Paste"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, Placeholder]}]&)}],
+  
+  Cell[StyleData["Evaluate"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        SelectionEvaluate[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["EvaluateCell"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionMove[ 
+          FrontEnd`InputNotebook[ ], All, Cell, 1], 
+        FrontEnd`SelectionEvaluateCreateCell[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["CopyEvaluate"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`SelectionCreateCell[ 
+          FrontEnd`InputNotebook[ ], All], 
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionEvaluate[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}],
+  
+  Cell[StyleData["CopyEvaluateCell"],
+    StyleMenuListing->None,
+    ButtonStyleMenuListing->Automatic,
+    ButtonBoxOptions->{ButtonFunction:>(FrontEndExecute[ {
+        FrontEnd`SelectionCreateCell[ 
+          FrontEnd`InputNotebook[ ], All], 
+        FrontEnd`NotebookApply[ 
+          FrontEnd`InputNotebook[ ], #, All], 
+        FrontEnd`SelectionEvaluateCreateCell[ 
+          FrontEnd`InputNotebook[ ], All]}]&)}]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Placeholder Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles useful for making placeholder \
+objects in palette templates.\
+\>", "Text"],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["Placeholder"],
+    Placeholder->True,
+    StyleMenuListing->None,
+    FontSlant->"Italic",
+    FontColor->RGBColor[0.890623, 0.864698, 0.384756],
+    TagBoxOptions->{Editable->False,
+    Selectable->False,
+    StripWrapperBoxes->False}],
+  
+  Cell[StyleData["Placeholder", "Presentation"]],
+  
+  Cell[StyleData["Placeholder", "Condensed"]],
+  
+  Cell[StyleData["Placeholder", "Printout"]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell[StyleData["PrimaryPlaceholder"],
+    StyleMenuListing->None,
+    DrawHighlighted->True,
+    FontSlant->"Italic",
+    Background->RGBColor[0.912505, 0.891798, 0.507774],
+    TagBoxOptions->{Editable->False,
+    Selectable->False,
+    StripWrapperBoxes->False}],
+  
+  Cell[StyleData["PrimaryPlaceholder", "Presentation"]],
+  
+  Cell[StyleData["PrimaryPlaceholder", "Condensed"]],
+  
+  Cell[StyleData["PrimaryPlaceholder", "Printout"]]
+  }, Closed]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["FormatType Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles that are mixed in with the styles \
+of most cells.  If a cell's FormatType matches the name of one of the styles \
+defined below, then that style is applied between the cell's style and its \
+own options. This is particularly true of Input and Output.\
+\>", "Text"],
+  
+  Cell[StyleData["CellExpression"],
+    PageWidth->Infinity,
+    CellMargins->{{6, Inherited}, {Inherited, Inherited}},
+    ShowCellLabel->False,
+    ShowSpecialCharacters->False,
+    AllowInlineCells->False,
+    Hyphenation->False,
+    AutoItalicWords->{},
+    StyleMenuListing->None,
+    FontFamily->"Courier",
+    FontSize->12,
+    Background->GrayLevel[1]],
+  
+  Cell[StyleData["InputForm"],
+    InputAutoReplacements->{},
+    AllowInlineCells->False,
+    Hyphenation->False,
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["OutputForm"],
+    PageWidth->Infinity,
+    TextAlignment->Left,
+    LineSpacing->{0.6, 1},
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["StandardForm"],
+    InputAutoReplacements->{
+      "->"->"\[Rule]", ":>"->"\[RuleDelayed]", "<="->"\[LessEqual]", 
+        ">="->"\[GreaterEqual]", "!="->"\[NotEqual]", "=="->"\[Equal]", 
+        Inherited},
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    LineSpacing->{1.25, 0},
+    StyleMenuListing->None,
+    FontFamily->"Courier"],
+  
+  Cell[StyleData["TraditionalForm"],
+    InputAutoReplacements->{
+      "->"->"\[Rule]", ":>"->"\[RuleDelayed]", "<="->"\[LessEqual]", 
+        ">="->"\[GreaterEqual]", "!="->"\[NotEqual]", "=="->"\[Equal]", 
+        Inherited},
+    "TwoByteSyntaxCharacterAutoReplacement"->True,
+    LineSpacing->{1.25, 0},
+    SingleLetterItalics->True,
+    TraditionalFunctionNotation->True,
+    DelimiterMatching->None,
+    StyleMenuListing->None],
+  
+  Cell["\<\
+The style defined below is mixed in to any cell that is in an \
+inline cell within another.\
+\>", "Text"],
+  
+  Cell[StyleData["InlineCell"],
+    LanguageCategory->"Formula",
+    ScriptLevel->1,
+    StyleMenuListing->None],
+  
+  Cell[StyleData["InlineCellEditing"],
+    StyleMenuListing->None,
+    Background->RGBColor[1, 0.749996, 0.8]]
+  }, Closed]],
+  
+  Cell[CellGroupData[{
+  
+  Cell["Automatic Styles", "Section"],
+  
+  Cell["\<\
+The cells below define styles that are used to affect the display \
+of certain types of objects in typeset expressions.  For example, \
+\"UnmatchedBracket\" style defines how unmatched bracket, curly bracket, and \
+parenthesis characters are displayed (typically by coloring them to make them \
+stand out).\
+\>", "Text"],
+  
+  Cell[StyleData["UnmatchedBracket"],
+    StyleMenuListing->None,
+    FontColor->RGBColor[0.760006, 0.330007, 0.8]]
+  }, Closed]]
+  }, Open  ]]
+  }]
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 62, 1, 69, "Title"],
+Cell[1841, 56, 72, 1, 39, "Subtitle"],
+Cell[1916, 59, 511, 13, 52, "Text"],
+Cell[2430, 74, 185, 4, 33, "Text"],
+Cell[2618, 80, 54, 1, 30, "Input"],
+Cell[2675, 83, 178, 4, 33, "Text"],
+Cell[2856, 89, 172, 3, 30, "Input"],
+Cell[3031, 94, 195, 6, 33, "Text"],
+Cell[3229, 102, 356, 7, 90, "Input"],
+Cell[3588, 111, 68, 0, 33, "Text"],
+
+Cell[CellGroupData[{
+Cell[3681, 115, 62, 1, 30, "Input"],
+Cell[3746, 118, 144, 2, 29, "Output"]
+}, Open  ]],
+Cell[3905, 123, 50, 0, 33, "Text"],
+
+Cell[CellGroupData[{
+Cell[3980, 127, 381, 6, 50, "Input"],
+Cell[4364, 135, 74868, 1528, 287, 19546, 842, "GraphicsData", "PostScript", \
+"Graphics"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+
