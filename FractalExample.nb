@@ -1,0 +1,1619 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.0'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     31719,       1272]*)
+(*NotebookOutlinePosition[     32603,       1302]*)
+(*  CellTagsIndexPosition[     32559,       1298]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Fractals", "Title",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell["The Obligatory Fractal Example", "Subtitle",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell["\<\
+Doug Stein, Wolfram Research, Inc.
+22 February 1993\
+\>", "Subsubtitle",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "This ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " Notebook compares the following generators of fractals of iterated Sin \
+and Cos functions on the complex plane:"
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "* a pure ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " implementation\n* an implementation that uses a",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " template-based C program\n* a parallelized ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " implementation running on several processors"
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell["Examples", "Section",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "One calls the external template-based ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " program \"fractals\" differently depending upon whether it is to be \
+parallelized or not. This is because template functions are normally invoked \
+by using ",
+  StyleBox["LinkWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " to send a ",
+  StyleBox["CallPacket",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " to the external program; ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " then immediately performs a ",
+  StyleBox["LinkRead",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " on that link and \"blocks\" until the template program returns. In order \
+to successfully parallelize the external computations, one must execute all \
+of the ",
+  StyleBox["LinkWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "s before the first ",
+  StyleBox["LinkRead",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " is executed.  The code to do this is found in the implementation section \
+at the bottom of this Notebook."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  "How to use exactly one external ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " program"
+}], "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "In this example and all those following, we'll use the ",
+  StyleBox["LinkMode->Connect",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " option and assume that a copy of the fractal engine is running and has \
+opened a ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " connection in ",
+  StyleBox["Listen",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " mode. By the way, the default ",
+  StyleBox["LinkMode",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " for Macintoshes is ",
+  StyleBox["Launch",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  ", which is currently usable only if the template program is to be run on \
+the same CPU as ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  "."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[1, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881.1\", 5, 2]}\
+\>", "\<\
+{LinkObject[fractals881.1, 5, 2]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell["Note now the functions that are defined:", "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(LinkPatterns[
+      fractalLinks\[LeftDoubleBracket]1\[RightDoubleBracket]]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{HoldForm[sinFractalC[LinkObject[\"fractals881.1\", 5, 
+ 
+     2], {{ReMin_, ReMax_, ReSteps_}, 
+ 
+     {ImMin_, ImMax_, ImSteps_}}]], 
+ 
+  HoldForm[cosFractalC[LinkObject[\"fractals881.1\", 5, 
+ 
+     2], {{ReMin_, ReMax_, ReSteps_}, 
+ 
+     {ImMin_, ImMax_, ImSteps_}}]]}\
+\>", "\<\
+{sinFractalC[LinkObject[fractals881.1, 5, 2], 
+ 
+   {{ReMin_, ReMax_, ReSteps_}, 
+ 
+    {ImMin_, ImMax_, ImSteps_}}], 
+ 
+  cosFractalC[LinkObject[fractals881.1, 5, 2], 
+ 
+   {{ReMin_, ReMax_, ReSteps_}, 
+ 
+    {ImMin_, ImMax_, ImSteps_}}]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[TextData[{
+  "In addition, the template program defines the following functions in \
+Mathematica when it is ",
+  StyleBox["Install",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "ed by ",
+  StyleBox["OpenFractalLinks",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  ":"
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Information["\<SinFractalWrite\>", LongForm \[Rule] True]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell["\<\
+Global`SinFractalWrite
+
+SinFractalWrite[l_LinkObject, 
+   {{ReMin_, ReMax_, ReSteps_}, 
+    {ImMin_, ImMax_, ImSteps_}}] := 
+  LinkWrite[l, CallPacket[0, 
+    {N[ReMin], N[ReMax], ReSteps, N[ImMin], N[ImMax], 
+     ImSteps}]]\
+\>", "Print",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Information["\<CosFractalWrite\>", LongForm \[Rule] True]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell["\<\
+Global`CosFractalWrite
+
+CosFractalWrite[l_LinkObject, 
+   {{ReMin_, ReMax_, ReSteps_}, 
+    {ImMin_, ImMax_, ImSteps_}}] := 
+  LinkWrite[l, CallPacket[1, 
+    {N[ReMin], N[ReMax], ReSteps, N[ImMin], N[ImMax], 
+     ImSteps}]]\
+\>", "Print",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[TextData[{
+  StyleBox["SinFractalWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " and ",
+  StyleBox["CosFractalWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " manually write a ",
+  StyleBox["CallPacket",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " to the appropriate external ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " function. Now here is one of the computations that will be used later in \
+the timing tests:"
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalPlot[
+      sinFractalC[
+        fractalLinks\[LeftDoubleBracket]1\[RightDoubleBracket], {{\(-7\), 7, 
+            150}, {\(-7\), 7, 150}}], {0, 50}]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+DensityGraphics[\"<<>>\"]\
+\>", "\<\
+-DensityGraphics-\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{\"fractals881.1\"}\
+\>", "\<\
+{fractals881.1}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  "How to use one or more external ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " programs"
+}], "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[3, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881.1\", 6, 2], 
+ 
+  LinkObject[\"fractals881.2\", 7, 3], 
+ 
+  LinkObject[\"fractals881.3\", 8, 4]}\
+\>", "\<\
+{LinkObject[fractals881.1, 6, 2], 
+ 
+  LinkObject[fractals881.2, 7, 3], 
+ 
+  LinkObject[fractals881.3, 8, 4]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[TextData[{
+  "Here we have to call ",
+  StyleBox["ParallelFractal",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " and ",
+  StyleBox["SinFractalWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "; these conspire to execute all the ",
+  StyleBox["LinkWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "s first and subsequently execute the corresponding ",
+  StyleBox["LinkRead",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "s. This is somewhat less clear than directly calling ",
+  StyleBox["sinFractalC",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  ", but it does allow parallelism."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalPlot[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{0.4, 0.42, 250}, {1.69, 1.71, 250}}], {4, 
+        20}]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+DensityGraphics[\"<<>>\"]\
+\>", "\<\
+-DensityGraphics-\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{\"fractals881.1\", \"fractals881.2\", \"fractals881.3\"}\
+\>", "\<\
+{fractals881.1, fractals881.2, fractals881.3}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Timing Tests", "Section",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "In this section I do not use ",
+  StyleBox["fractalPlot",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "; this is done so timing comparisons do not include PostScript generation \
+and rendering which is constant for all the test cases. Note also that \
+whereas ",
+  StyleBox["Timing",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " gives ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " execution time, ",
+  StyleBox["AbsoluteTime[]",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " gives wall-clock time."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell["\<\
+<<LATE-BREAKING NOTE --- Ignore \"Timing\" since there seems to be a subtle \
+bug in the accumulation of kernel time when an external MathLink process is \
+very time-consuming; the value of AbsoluteTime[] - startTime is meaningful, \
+however.>>\
+\>", "Text",
+  ImageRegion->{{0, 1}, {0, 1}},
+  FontSize->9,
+  FontWeight->"Bold"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  "Native ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " Code"
+}], "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      sinFractalPureM[{{\(-7\), 7, 150}, {\(-7\), 7, 150}}]; ]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{7746.25*Second, Null}\
+\>", "\<\
+{7746.25 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+8163\
+\>", "\<\
+8163\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell["\<\
+Note: I won't even do the next one because it takes a very, very long time.\
+\>", "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(Timing[
+      sinFractalPureM[{{0.4, 0.42, 250}, {1.69, 1.71, 250}}]; ]\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["One fractal process on a Macintosh IIci", "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "One copy of ",
+  StyleBox["fractals881",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " is running on the same IIci as the ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " Front End and Kernel."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[1, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881.1\", 9, 2]}\
+\>", "\<\
+{LinkObject[fractals881.1, 9, 2]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{\(-7\), 7, 150}, {\(-7\), 7, 150}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{77.78333333333333321*Second, Null}\
+\>", "\<\
+{77.7833 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+124\
+\>", "\<\
+124\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{0.4, 0.42, 250}, {1.69, 1.71, 250}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{385.*Second, Null}\
+\>", "\<\
+{385. Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+551\
+\>", "\<\
+551\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["2 fractal processes on a IIci", "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "In this test, two copies of ",
+  StyleBox["fractal881",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " are run on the same processor as Mathematica's Front End and Kernel."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[2, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881.1\", 7, 2], 
+ 
+  LinkObject[\"fractals881.2\", 8, 3]}\
+\>", "\<\
+{LinkObject[fractals881.1, 7, 2], 
+ 
+  LinkObject[fractals881.2, 8, 3]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{\(-7\), 7, 150}, {\(-7\), 7, 150}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{71.96666666666666678*Second, Null}\
+\>", "\<\
+{71.9667 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+124\
+\>", "\<\
+124\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{0.4, 0.42, 250}, {1.69, 1.71, 250}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{352.7833333333333332*Second, Null}\
+\>", "\<\
+{352.783 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+548\
+\>", "\<\
+548\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Three fractal process (1 on a Macintosh IIci and 2 on Rocket 33s)\
+\>", "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "Here we have three copies of ",
+  StyleBox["fractals881",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " running; one is running on each of the Radius Rockets. An additional one \
+is running on the host IIci."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[3, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881@Rocket DBS-2.Business\", 4, 2], 
+ 
+  LinkObject[\"fractals881@Rocket DBS-1.Business\", 5, 
+ 
+   3], LinkObject[\"fractals881.1\", 6, 4]}\
+\>", "\<\
+{LinkObject[fractals881@Rocket DBS-2.Business, 4, 2], 
+ 
+  LinkObject[fractals881@Rocket DBS-1.Business, 5, 3], 
+ 
+  LinkObject[fractals881.1, 6, 4]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{\(-7\), 7, 150}, {\(-7\), 7, 150}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{83.75*Second, Null}\
+\>", "\<\
+{83.75 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+97\
+\>", "\<\
+97\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{0.4, 0.42, 250}, {1.69, 1.71, 250}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{392.5833333333333339*Second, Null}\
+\>", "\<\
+{392.583 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+459\
+\>", "\<\
+459\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Two fractal processes on Rocket 33s", "Subsection",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "Here, we're only running 2 copies of ",
+  StyleBox["fractals881",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "; one copy is running on each of the Radius Rockets."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(fractalLinks = OpenFractalLinks[2, LinkMode \[Rule] Connect]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{LinkObject[\"fractals881@Rocket DBS-1.Business\", 2, 2], 
+ 
+  LinkObject[\"fractals881@Rocket DBS-2.Business\", 3, 3]}\
+\>", "\<\
+{LinkObject[fractals881@Rocket DBS-1.Business, 2, 2], 
+ 
+  LinkObject[fractals881@Rocket DBS-2.Business, 3, 3]}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{\(-7\), 7, 150}, {\(-7\), 7, 150}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{83.21666666666666679*Second, Null}\
+\>", "\<\
+{83.2167 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+86\
+\>", "\<\
+86\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(startTime = AbsoluteTime[]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Timing[
+      ParallelFractal[fractalLinks, 
+        SinFractalWrite, {{0.4, 0.42, 250}, {1.69, 1.71, 250}}]; ]\)], "Input",\
+
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+{415.7000000000000001*Second, Null}\
+\>", "\<\
+{415.7 Second, Null}\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(AbsoluteTime[] - startTime\)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[OutputFormData["\<\
+424\
+\>", "\<\
+424\
+\>"], "Output",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[BoxData[
+    \(CloseFractalLinks[fractalLinks]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CosFractal - Another Example", "Section",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "Here are some more pretty pictures; these were done with direct calls to \
+cosFractalC. You can use the parallelized approach above by calling ",
+  StyleBox["ParallelFractal",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " with a parameter of ",
+  StyleBox["CosFractalWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " instead of ",
+  StyleBox["SinFractalWrite",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  "."
+}], "Text",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(fractalPlot[
+      cosFractalC[{{\(-7\), 7, 500}, {\(-7\), 7, 500}}], {0, 
+        20}]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(fractalPlot[
+      cosFractalC[{{\(-2.0\), \(-1.75\), 500}, {1.3, 1.6, 500}}], {2, 
+        20}]; \)], "Input",
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Implementation", "Section",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  "Pure ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " Implementation"
+}], "Subsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "This section defines sinFractalPureM and cosFractalPureM. These are \
+implementations of iterated Sin and Cos fractals on the complex plain written \
+purely in ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  "."
+}], "Text",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell["sinFractalPureM", "Subsubsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(numberOfSinsToEscape[z_] := 
+      Block[{escapeCount, nz = N[z]}, 
+        For[escapeCount = 0, Abs[Im[nz]] < 10000 && escapeCount < 100, 
+          nz = Sin[nz]; \(++escapeCount\)]; escapeCount]\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(sinFractalPureM[{{ReMin_, ReMax_, ReSteps_}, {ImMin_, ImMax_, 
+            ImSteps_}}] := {fractalObj[{{ReMin, ReMax}, {ImMin, ImMax}}, 
+          Table[numberOfSinsToEscape[x + y\ \[ImaginaryI]], {y, ImMin, 
+              ImMax, \(ImMax - ImMin\)\/ImSteps}, {x, ReMin, 
+              ReMax, \(ReMax - ReMin\)\/ReSteps}]]}\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["cosFractalPureM", "Subsubsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(numberOfCosToEscape[z_] := 
+      Block[{escapeCount, nz = N[z]}, 
+        For[escapeCount = 0, Abs[Im[nz]] < 10000 && escapeCount < 100, 
+          nz = Cos[nz]; \(++escapeCount\)]; escapeCount]\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(cosFractalPureM[{{ReMin_, ReMax_, ReSteps_}, {ImMin_, ImMax_, 
+            ImSteps_}}] := {fractalObj[{{ReMin, ReMax}, {ImMin, ImMax}}, 
+          Table[numberOfCosToEscape[x + y\ \[ImaginaryI]], {y, ImMin, 
+              ImMax, \(ImMax - ImMin\)\/ImSteps}, {x, ReMin, 
+              ReMax, \(ReMax - ReMin\)\/ReSteps}]]}\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " and C implementation"
+}], "Subsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  "This section uses a template-based ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " program that implements sinFractalC and cosFractalC. The included",
+  StyleBox[" MathLink",
+    FontSlant->"Italic"],
+  " template file ",
+  StyleBox["fractals.tm",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " and C file ",
+  StyleBox["fractals.c",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " will compile without changes on any system with an ANSI C compiler and a \
+copy of ",
+  StyleBox["mprep",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " (supplied with ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  "). I've also included a compiled Macintosh version with this Notebook that \
+requires a 68020 or higher CPU along with a 68881 or higher FPU (a 68040 \
+machine satisfies both criteria). Unfortunately, this version of the fractal \
+program doesn't perform the machine-dependent checks for these so it will \
+crash on a machine that doesn't fit the bill. You can, of course, recompile \
+fractals with whatever compiler settings you desire."
+}], "Text",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[CellGroupData[{
+
+Cell["OpenFractalLinks", "Subsubsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  StyleBox["OpenFractalLinks[maxLinks, opts]",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " will ",
+  StyleBox["Install",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " up to ",
+  StyleBox["maxLinks",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " ",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " template programs and return the list of links. It will pass ",
+  StyleBox["opts",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " to ",
+  StyleBox["Install",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " so the latter can determine how to open the links. It is simply a \
+convenient wrapper around the ",
+  StyleBox["Install",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " function, which you could call directly."
+}], "Text",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(OpenFractalLinks[maxLinks_Integer, opts___Rule] := 
+      Module[{fractalLinks = {}, aLink, linkcount = maxLinks}, 
+        While[\(linkcount--\) > 
+              0 && \((aLink = Install["\<fractals\>", opts])\) =!= $Failed, 
+          AppendTo[fractalLinks, aLink]]; fractalLinks]\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["ParallelFractal", "Subsubsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  StyleBox["ParallelFractal",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " uses a list of links to the",
+  StyleBox["MathLink",
+    FontSlant->"Italic"],
+  " template programs to evaluate the function ",
+  StyleBox["f",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " on the complex domain ",
+  StyleBox["{{ReMin, ReMax},{ImMin,ImMax}}",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " with an escape parameter of ",
+  StyleBox["steps",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  ". It divides the problem up among the processes as equally as possible. My \
+definition of \"equal\" is based on area in the complex plain, not execution \
+time."
+}], "Text",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(ParallelFractal[fractalLinks_List, 
+        f_, {{ReMin_, ReMax_, ReSteps_}, {ImMin_, ImMax_, ImSteps_}}] := 
+      Module[{numLinks = Length[fractalLinks], useTheseLinks, ranges, itvar, 
+          pieceSteps, pieces, ans}, 
+        If[ImSteps \[LessEqual] numLinks, 
+          useTheseLinks = Take[fractalLinks, ImSteps], 
+          useTheseLinks = fractalLinks]; 
+        pieceSteps = Ceiling[ImSteps\/numLinks]; 
+        ranges = 
+          Partition[
+            Table[itvar, {itvar, ImMin, ImMax, \(ImMax - ImMin\)\/numLinks}], 
+            2, 1]; MapThread[
+          f[#1, {{ReMin, ReMax, ReSteps}, 
+                Join[#2, {pieceSteps}]}] &, {useTheseLinks, N[ranges]}]; 
+        pieces = LinkRead /@ useTheseLinks; 
+        ans = Join @@ \(\((#1\[LeftDoubleBracket]2\[RightDoubleBracket] &)\) /@ 
+              pieces\); 
+        ans = fractalObj @@ {{{ReMin, ReMax}, {ImMin, ImMax}}, ans}; 
+        ans]\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["CloseFractalLinks", "Subsubsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(CloseFractalLinks[l_List] := Uninstall /@ l; \)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["fractalPlot", "Subsection",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[TextData[{
+  StyleBox["fractalPlot",
+    FontFamily->"Courier",
+    FontWeight->"Bold"],
+  " is a wrapper around ListDensityPlot."
+}], "Text",
+  CellHorizontalScrolling->True,
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}],
+
+Cell[BoxData[
+    \(fractalPlot[fractal_fractalObj, {minCount_, maxCount_}] := 
+      Module[{}, 
+        ListDensityPlot[fractal\[LeftDoubleBracket]2\[RightDoubleBracket], 
+          PlotRange \[Rule] {minCount, maxCount}, 
+          MeshRange \[Rule] 
+            fractal\[LeftDoubleBracket]1\[RightDoubleBracket], 
+          Mesh \[Rule] False, AspectRatio \[Rule] Automatic, 
+          ColorFunction \[Rule] Hue]]\)], "Input",
+  InitializationCell->True,
+  ImageRegion->{{0, 1}, {0, 1}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"5.0 for Microsoft Windows",
+ScreenRectangle->{{0, 1024}, {0, 723}},
+AutoGeneratedPackage->None,
+WindowToolbars->{},
+CellGrouping->Manual,
+WindowSize->{711, 578},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+PrivateNotebookOptions->{"ColorPalette"->{RGBColor, -1}},
+ShowCellLabel->True,
+ShowCellTags->False,
+RenderingOptions->{"ObjectDithering"->True,
+"RasterDithering"->False}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 58, 1, 95, "Title"],
+Cell[1837, 56, 83, 1, 51, "Subtitle"],
+Cell[1923, 59, 115, 4, 50, "Subsubtitle"],
+Cell[2041, 65, 241, 7, 52, "Text"],
+Cell[2285, 74, 379, 12, 71, "Text"],
+
+Cell[CellGroupData[{
+Cell[2689, 90, 60, 1, 73, "Section"],
+Cell[2752, 93, 1137, 34, 132, "Text"],
+
+Cell[CellGroupData[{
+Cell[3914, 131, 166, 6, 38, "Subsection"],
+Cell[4083, 139, 803, 27, 93, "Text"],
+
+Cell[CellGroupData[{
+Cell[4911, 170, 128, 3, 30, "Input"],
+Cell[5042, 175, 157, 5, 27, "Output"]
+}, Open  ]],
+Cell[5214, 183, 89, 1, 33, "Text"],
+
+Cell[CellGroupData[{
+Cell[5328, 188, 141, 3, 30, "Input"],
+Cell[5472, 193, 599, 25, 127, "Output"]
+}, Open  ]],
+Cell[6086, 221, 335, 12, 53, "Text"],
+
+Cell[CellGroupData[{
+Cell[6446, 237, 123, 2, 30, "Input"],
+Cell[6572, 241, 283, 10, 161, "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6892, 256, 123, 2, 30, "Input"],
+Cell[7018, 260, 283, 10, 161, "Print"]
+}, Open  ]],
+Cell[7316, 273, 518, 18, 73, "Text"],
+
+Cell[CellGroupData[{
+Cell[7859, 295, 222, 5, 50, "Input"],
+Cell[8084, 302, 129, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8250, 312, 97, 2, 30, "Input"],
+Cell[8350, 316, 121, 5, 27, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8520, 327, 167, 6, 38, "Subsection"],
+
+Cell[CellGroupData[{
+Cell[8712, 337, 128, 3, 30, "Input"],
+Cell[8843, 342, 317, 13, 67, "Output"]
+}, Open  ]],
+Cell[9175, 358, 686, 23, 94, "Text"],
+
+Cell[CellGroupData[{
+Cell[9886, 385, 198, 5, 70, "Input"],
+Cell[10087, 392, 129, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[10253, 402, 97, 2, 30, "Input"],
+Cell[10353, 406, 189, 5, 27, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[10603, 418, 64, 1, 73, "Section"],
+Cell[10670, 421, 606, 20, 93, "Text"],
+Cell[11279, 443, 338, 8, 62, "Text"],
+
+Cell[CellGroupData[{
+Cell[11642, 455, 141, 6, 38, "Subsection"],
+Cell[11786, 463, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[11905, 469, 136, 3, 50, "Input"],
+Cell[12044, 474, 131, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12212, 484, 92, 2, 30, "Input"],
+Cell[12307, 488, 95, 5, 27, "Output"]
+}, Open  ]],
+Cell[12417, 496, 132, 3, 33, "Text"],
+Cell[12552, 501, 94, 2, 30, "Input"],
+Cell[12649, 505, 137, 3, 70, "Input"],
+Cell[12789, 510, 92, 2, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12918, 517, 94, 1, 38, "Subsection"],
+Cell[13015, 520, 277, 10, 53, "Text"],
+
+Cell[CellGroupData[{
+Cell[13317, 534, 128, 3, 30, "Input"],
+Cell[13448, 539, 157, 5, 27, "Output"]
+}, Open  ]],
+Cell[13620, 547, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[13739, 553, 178, 5, 70, "Input"],
+Cell[13920, 560, 144, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[14101, 570, 92, 2, 30, "Input"],
+Cell[14196, 574, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[14304, 582, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[14423, 588, 179, 5, 70, "Input"],
+Cell[14605, 595, 125, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[14767, 605, 92, 2, 30, "Input"],
+Cell[14862, 609, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[14970, 617, 99, 2, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[15106, 624, 84, 1, 38, "Subsection"],
+Cell[15193, 627, 245, 7, 53, "Text"],
+
+Cell[CellGroupData[{
+Cell[15463, 638, 128, 3, 30, "Input"],
+Cell[15594, 643, 237, 9, 47, "Output"]
+}, Open  ]],
+Cell[15846, 655, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[15965, 661, 178, 5, 70, "Input"],
+Cell[16146, 668, 144, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[16327, 678, 92, 2, 30, "Input"],
+Cell[16422, 682, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[16530, 690, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[16649, 696, 179, 5, 70, "Input"],
+Cell[16831, 703, 144, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[17012, 713, 92, 2, 30, "Input"],
+Cell[17107, 717, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[17215, 725, 99, 2, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[17351, 732, 128, 3, 56, "Subsection"],
+Cell[17482, 737, 282, 8, 53, "Text"],
+
+Cell[CellGroupData[{
+Cell[17789, 749, 128, 3, 30, "Input"],
+Cell[17920, 754, 398, 13, 67, "Output"]
+}, Open  ]],
+Cell[18333, 770, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[18452, 776, 178, 5, 70, "Input"],
+Cell[18633, 783, 127, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[18797, 793, 92, 2, 30, "Input"],
+Cell[18892, 797, 91, 5, 27, "Output"]
+}, Open  ]],
+Cell[18998, 805, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[19117, 811, 179, 5, 70, "Input"],
+Cell[19299, 818, 144, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[19480, 828, 92, 2, 30, "Input"],
+Cell[19575, 832, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[19683, 840, 99, 2, 30, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[19819, 847, 90, 1, 38, "Subsection"],
+Cell[19912, 850, 238, 7, 53, "Text"],
+
+Cell[CellGroupData[{
+Cell[20175, 861, 128, 3, 30, "Input"],
+Cell[20306, 866, 317, 9, 47, "Output"]
+}, Open  ]],
+Cell[20638, 878, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[20757, 884, 178, 5, 70, "Input"],
+Cell[20938, 891, 144, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[21119, 901, 92, 2, 30, "Input"],
+Cell[21214, 905, 91, 5, 27, "Output"]
+}, Open  ]],
+Cell[21320, 913, 94, 2, 30, "Input"],
+
+Cell[CellGroupData[{
+Cell[21439, 919, 179, 5, 70, "Input"],
+Cell[21621, 926, 142, 5, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[21800, 936, 92, 2, 30, "Input"],
+Cell[21895, 940, 93, 5, 27, "Output"]
+}, Open  ]],
+Cell[22003, 948, 99, 2, 30, "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[22151, 956, 80, 1, 73, "Section"],
+Cell[22234, 959, 506, 16, 92, "Text"],
+Cell[22743, 977, 155, 4, 50, "Input"],
+Cell[22901, 983, 164, 4, 70, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[23102, 992, 127, 3, 73, "Section",
+  InitializationCell->True],
+
+Cell[CellGroupData[{
+Cell[23254, 999, 210, 8, 38, "Subsection",
+  InitializationCell->True],
+Cell[23467, 1009, 345, 10, 71, "Text",
+  InitializationCell->True],
+
+Cell[CellGroupData[{
+Cell[23837, 1023, 134, 3, 29, "Subsubsection",
+  InitializationCell->True],
+Cell[23974, 1028, 290, 6, 110, "Input",
+  InitializationCell->True],
+Cell[24267, 1036, 416, 7, 163, "Input",
+  InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[24720, 1048, 134, 3, 29, "Subsubsection",
+  InitializationCell->True],
+Cell[24857, 1053, 289, 6, 110, "Input",
+  InitializationCell->True],
+Cell[25149, 1061, 415, 7, 163, "Input",
+  InitializationCell->True]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[25613, 1074, 202, 7, 38, "Subsection",
+  InitializationCell->True],
+Cell[25818, 1083, 1205, 32, 206, "Text",
+  InitializationCell->True],
+
+Cell[CellGroupData[{
+Cell[27048, 1119, 135, 3, 29, "Subsubsection",
+  InitializationCell->True],
+Cell[27186, 1124, 898, 32, 113, "Text",
+  InitializationCell->True],
+Cell[28087, 1158, 375, 7, 130, "Input",
+  InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[28499, 1170, 134, 3, 29, "Subsubsection",
+  InitializationCell->True],
+Cell[28636, 1175, 803, 25, 131, "Text",
+  InitializationCell->True],
+Cell[29442, 1202, 1008, 21, 462, "Input",
+  InitializationCell->True]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[30487, 1228, 136, 3, 29, "Subsubsection",
+  InitializationCell->True],
+Cell[30626, 1233, 139, 3, 30, "Input",
+  InitializationCell->True]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[30814, 1242, 127, 3, 38, "Subsection",
+  InitializationCell->True],
+Cell[30944, 1247, 241, 8, 34, "Text",
+  InitializationCell->True],
+Cell[31188, 1257, 491, 10, 130, "Input",
+  InitializationCell->True]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

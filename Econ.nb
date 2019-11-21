@@ -1,0 +1,518 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[     18598,        509]
+NotebookOptionsPosition[     18216,        492]
+NotebookOutlinePosition[     18560,        507]
+CellTagsIndexPosition[     18517,        504]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"g17", "=", 
+   RowBox[{
+   "Import", "[", 
+    "\"\<http://www.federalreserve.gov/datadownload/Output.aspx?rel=G17&\
+series=809009461b1cba2fd5b4cf5557d9d663&lastObs=100&from=&to=&filetype=csv&\
+label=include&layout=seriesrow\>\"", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"date1", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"DateList", "[", 
+      RowBox[{"DateString", "[", 
+       RowBox[{"Take", "[", 
+        RowBox[{
+         RowBox[{"Extract", "[", 
+          RowBox[{"g17", ",", 
+           RowBox[{"{", "1", "}"}]}], "]"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"-", "100"}], "}"}]}], "]"}], "]"}], "]"}], ",", "2"}], 
+    "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"industrialproduction", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"g17", ",", 
+       RowBox[{"{", "2", "}"}]}], "]"}], ",", 
+     RowBox[{"-", "100"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"utilization", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"g17", ",", 
+       RowBox[{"{", "12", "}"}]}], "]"}], ",", 
+     RowBox[{"-", "100"}]}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"DateListPlot", "[", 
+  RowBox[{
+   RowBox[{"Tooltip", "[", "industrialproduction", "]"}], ",", "date1"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"DateListPlot", "[", 
+  RowBox[{
+   RowBox[{"Tooltip", "[", "utilization", "]"}], ",", "date1"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->CompressedData["
+1:eJwty1tIk2Ecx/GniIgc0sjDUGfYQdEhWCiChwtnRmgEbSJLUzyNQsQDOMQD
++Lym4UwkqHWjdbFCsCjFUIi6ECFIFMET6C70RsVleGOUg076fJ+Llw/f3/P+
+E6obHe6TQojco+9YIV9HxMwE84TwW9DrwCWURgX9o5K236e76+nJJvpfM53a
+Sjdqv3fgjoFVXgxqpwZxF+WlZ/r+Oa5kxyotORjIx57rSjl9k/5USDfcwXGt
+KMVubXolZmvja7l31tEXJD1loNnLHqU1/Gh9heZR7H2PXya4e/ABf35kH5vR
+d/O4pX0T4r+0P/jVFKdMPaeUnRH4xIrhF3m/dRllOvtsBgay8HQuJjr5r62Y
+LruLZ8vRXcP7uJu21eGeB9f7eJ/ox/Zh/DuC8e8wgFKesSqjTfjLjK7zOJCM
+j1LwaiEuFGG7SymGUfo8dFIXJjxkT0Nx6ikW+dhfDuGJF+z+xTylb1kpM9fo
++Q3a8w0f77HPHeDt3+zbYXbVLpNSRlroz9osG45cQ7sTJ0tw+h5eKec+qhpb
+DPa+TTq4jW+D7I59XD1kHw3R5pR81QU27D+8oewJHfsfg12Rjg==
+  "]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"cpi", "=", 
+   RowBox[{"Import", "[", 
+    RowBox[{
+    "\"\<ftp://ftp.bls.gov/pub/special.requests/cpi/cpiai.txt\>\"", ",", 
+     "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cpi1", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"cpi", ",", 
+       RowBox[{"-", "1"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", 
+       RowBox[{"Length", "[", 
+        RowBox[{"Extract", "[", 
+         RowBox[{"cpi", ",", 
+          RowBox[{"-", "1"}]}], "]"}], "]"}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cpi2", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"cpi", ",", 
+       RowBox[{"-", "2"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", "13"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cpi3", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"cpi", ",", 
+       RowBox[{"-", "3"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", "13"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cpi4", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"Extract", "[", 
+      RowBox[{"cpi", ",", 
+       RowBox[{"-", "4"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"2", ",", "13"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"cpisample", "=", 
+   RowBox[{"Join", "[", 
+    RowBox[{"cpi4", ",", "cpi3", ",", "cpi2", ",", "cpi1"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"date2", "=", 
+   RowBox[{"Take", "[", 
+    RowBox[{
+     RowBox[{"DateList", "[", 
+      RowBox[{"DateString", "[", 
+       RowBox[{"Take", "[", 
+        RowBox[{
+         RowBox[{"Extract", "[", 
+          RowBox[{"cpi", ",", 
+           RowBox[{"-", "4"}]}], "]"}], ",", "1"}], "]"}], "]"}], "]"}], ",", 
+     "2"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"DateListPlot", "[", 
+  RowBox[{
+   RowBox[{"Tooltip", "[", "cpisample", "]"}], ",", "date2"}], 
+  "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.457295071625*^9, 3.457295119203125*^9}, {
+   3.457295213921875*^9, 3.457295301109375*^9}, {3.45729534540625*^9, 
+   3.45729534871875*^9}, {3.45729544046875*^9, 3.45729547421875*^9}, {
+   3.45729657390625*^9, 3.457296580125*^9}, {3.4572966570625*^9, 
+   3.4572967146875*^9}, {3.4572967450625*^9, 3.45729674834375*^9}, {
+   3.457296787234375*^9, 3.45729678740625*^9}, {3.457296824859375*^9, 
+   3.45729687615625*^9}, {3.457296914109375*^9, 3.45729693903125*^9}, {
+   3.45729700209375*^9, 3.4572970069375*^9}, 3.4572970684375*^9, {
+   3.4572971931875*^9, 3.45729720796875*^9}, {3.457297318140625*^9, 
+   3.457297320796875*^9}, {3.457297506203125*^9, 3.4572975563125*^9}, {
+   3.4572975903125*^9, 3.4572975984375*^9}, {3.457297747546875*^9, 
+   3.457297786953125*^9}, {3.45729782671875*^9, 3.457297840234375*^9}, {
+   3.457297885453125*^9, 3.457297892875*^9}, {3.457298014078125*^9, 
+   3.4572980569375*^9}, {3.45729844446875*^9, 3.45729847540625*^9}, {
+   3.457298546546875*^9, 3.45729861153125*^9}, {3.457298671625*^9, 
+   3.457298687625*^9}, {3.457298739578125*^9, 3.45729876503125*^9}, {
+   3.457300437265625*^9, 3.45730056515625*^9}, {3.45730060446875*^9, 
+   3.457300704625*^9}, {3.4573007361875*^9, 3.457300802671875*^9}, {
+   3.457300867390625*^9, 3.45730087140625*^9}, {3.45730090365625*^9, 
+   3.457300917578125*^9}, {3.45730095371875*^9, 3.457301148640625*^9}, 
+   3.457301199*^9, {3.4573012320625*^9, 3.45730130721875*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{{{}, 
+    {Hue[0.67, 0.6, 0.6], PointBox[CompressedData["
+1:eJxTTMoPSmViYGDQAmIQDQQOxm9eOM6aCQQnMxyAfAH/jy8c00DgGpgf8OYr
+VP4nmK/A8fuFI1inQSaIf+Dnfyg/AMyfIMr60vHsGSCIAfMN2LleQuQLwHwG
+ZX6ofA2Yf8FOBEV9gYHkS4h9lmC+g4/cS2T7Htgqo8hviNR46RiVYn3f3xfM
+byjVfenYLnbz3Pd8iPuEjF46qrI1TnVeDXGfnvlLx9MLXbd9vgpxn4LNS8d3
+Nfamcf8g7rNxhKrnzgLxF+i6vXRU3FCUMZETzC/w9H7peNk3SSDiL8R9qQEv
+HT0eVoms4wfLPwgLhZovC+ZvKIp66did8/z3SlcwPyAl/qXjvysVL9UcwXyF
+hpSXjoe/asT0J4H5H2ZnvnSUZAnj0y0D8xOS8146mnc6JjzdAOYb1Be/dCyd
+LMESdgvMv1BQ8dLRD+gcS5FssHt7al86rnMHOigKzHeoa3rpyKQNDJE6MF9g
+VvtLxxl5Qs0HksD8B1t7XjqCjOOLBPMblk+Emi8E5gccngYN716I+7bMfuk4
+7/3yY97uYP6BCwteOtZn7SmZnALmT3izFOr+Noj7Ole9dFw2+4jChmmQ8Fy6
+Hhpey8F8h+lbXjpyrJGJStkN5gts3gnV/y3LAQCEY/Us
+      "]]}, {}}, {
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3450624*^9, 198.3}}]},
+      "198.3`"],
+     Annotation[#, 198.3, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3477408*^9, 198.7}}]},
+      "198.7`"],
+     Annotation[#, 198.7, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.35016*^9, 199.8}}]},
+      "199.8`"],
+     Annotation[#, 199.8, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3528384*^9, 201.5}}]},
+      "201.5`"],
+     Annotation[#, 201.5, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3554304*^9, 202.5}}]},
+      "202.5`"],
+     Annotation[#, 202.5, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3581088*^9, 202.9}}]},
+      "202.9`"],
+     Annotation[#, 202.9, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3607008*^9, 203.5}}]},
+      "203.5`"],
+     Annotation[#, 203.5, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3633792*^9, 203.9}}]},
+      "203.9`"],
+     Annotation[#, 203.9, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3660576*^9, 202.9}}]},
+      "202.9`"],
+     Annotation[#, 202.9, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3686496*^9, 201.8}}]},
+      "201.8`"],
+     Annotation[#, 201.8, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.371328*^9, 201.5}}]},
+      "201.5`"],
+     Annotation[#, 201.5, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.37392*^9, 201.8}}]},
+      "201.8`"],
+     Annotation[#, 201.8, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3765984*^9, 202.416}}]},
+      "202.416`"],
+     Annotation[#, 202.416, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3792768*^9, 203.499}}]},
+      "203.499`"],
+     Annotation[#, 203.499, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.381696*^9, 205.352}}]},
+      "205.352`"],
+     Annotation[#, 205.352, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3843744*^9, 206.686}}]},
+      "206.686`"],
+     Annotation[#, 206.686, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3869664*^9, 207.949}}]},
+      "207.949`"],
+     Annotation[#, 207.949, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3896448*^9, 208.352}}]},
+      "208.352`"],
+     Annotation[#, 208.352, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3922368*^9, 208.299}}]},
+      "208.299`"],
+     Annotation[#, 208.299, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3949152*^9, 207.917}}]},
+      "207.917`"],
+     Annotation[#, 207.917, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.3975936*^9, 208.49}}]},
+      "208.49`"],
+     Annotation[#, 208.49, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4001856*^9, 208.936}}]},
+      "208.936`"],
+     Annotation[#, 208.936, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.402864*^9, 210.177}}]},
+      "210.177`"],
+     Annotation[#, 210.177, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.405456*^9, 210.036}}]},
+      "210.036`"],
+     Annotation[#, 210.036, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4081344*^9, 211.08}}]},
+      "211.08`"],
+     Annotation[#, 211.08, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4108128*^9, 211.693}}]},
+      "211.693`"],
+     Annotation[#, 211.693, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4133184*^9, 213.528}}]},
+      "213.528`"],
+     Annotation[#, 213.528, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4159968*^9, 214.823}}]},
+      "214.823`"],
+     Annotation[#, 214.823, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4185888*^9, 216.632}}]},
+      "216.632`"],
+     Annotation[#, 216.632, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4212672*^9, 218.815}}]},
+      "218.815`"],
+     Annotation[#, 218.815, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4238592*^9, 219.964}}]},
+      "219.964`"],
+     Annotation[#, 219.964, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4265376*^9, 219.086}}]},
+      "219.086`"],
+     Annotation[#, 219.086, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.429216*^9, 218.783}}]},
+      "218.783`"],
+     Annotation[#, 218.783, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.431808*^9, 216.573}}]},
+      "216.573`"],
+     Annotation[#, 216.573, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4344864*^9, 212.425}}]},
+      "212.425`"],
+     Annotation[#, 212.425, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4370784*^9, 210.228}}]},
+      "210.228`"],
+     Annotation[#, 210.228, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4397568*^9, 211.143}}]},
+      "211.143`"],
+     Annotation[#, 211.143, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4424352*^9, 212.193}}]},
+      "212.193`"],
+     Annotation[#, 212.193, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4448544*^9, 212.709}}]},
+      "212.709`"],
+     Annotation[#, 212.709, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4475328*^9, 213.24}}]},
+      "213.24`"],
+     Annotation[#, 213.24, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4501248*^9, 213.856}}]},
+      "213.856`"],
+     Annotation[#, 213.856, "Tooltip"]& ], 
+    TagBox[
+     TooltipBox[
+      {Opacity[0.], PointBox[{{3.4528032*^9, 215.693}}]},
+      "215.693`"],
+     Annotation[#, 215.693, "Tooltip"]& ]}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  AxesOrigin->NCache[{3345062400, 200.}, {3.3450624*^9, 200.}],
+  Frame->True,
+  FrameTicks->{{Automatic, Automatic}, {{{
+       NCache[3345062400, 3.3450624*^9], 
+       FormBox["\"2006\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3376598400, 3.3765984*^9], 
+       FormBox["\"2007\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3408134400, 3.4081344*^9], 
+       FormBox["\"2008\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3439756800, 3.4397568*^9], 
+       FormBox["\"2009\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3352838400, 3.3528384*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3360700800, 3.3607008*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3368649600, 3.3686496*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3384374400, 3.3843744*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3392236800, 3.3922368*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3400185600, 3.4001856*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3415996800, 3.4159968*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3423859200, 3.4238592*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3431808000, 3.431808*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3447532800, 3.4475328*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}}, {{
+       NCache[3345062400, 3.3450624*^9], 
+       FormBox["\"\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3376598400, 3.3765984*^9], 
+       FormBox["\"\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3408134400, 3.4081344*^9], 
+       FormBox["\"\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3439756800, 3.4397568*^9], 
+       FormBox["\"\"", TraditionalForm], {0.020601132958329826`, 0}}, {
+       NCache[3352838400, 3.3528384*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3360700800, 3.3607008*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3368649600, 3.3686496*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3384374400, 3.3843744*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3392236800, 3.3922368*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3400185600, 3.4001856*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3415996800, 3.4159968*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3423859200, 3.4238592*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3431808000, 3.431808*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}, {
+       NCache[3447532800, 3.4475328*^9], 
+       FormBox["\"\"", TraditionalForm], {0.012360679774997897`, 0}}}}},
+  GridLines->NCache[{{{3345062400, 
+       GrayLevel[0.8]}, {3376598400, 
+       GrayLevel[0.8]}, {3408134400, 
+       GrayLevel[0.8]}, {3439756800, 
+       GrayLevel[0.8]}}, None}, {{{3.3450624*^9, 
+       GrayLevel[0.8]}, {3.3765984*^9, 
+       GrayLevel[0.8]}, {3.4081344*^9, 
+       GrayLevel[0.8]}, {3.4397568*^9, 
+       GrayLevel[0.8]}}, None}],
+  PlotRange->{{3.3450624*^9, 3.4528032*^9}, {198.3, 219.964}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{
+    Scaled[0.02], 
+    Scaled[0.02]},
+  Ticks->None]], "Output",
+ CellChangeTimes->{
+  3.4572951263125*^9, 3.45729527646875*^9, 3.457295307390625*^9, 
+   3.457295353109375*^9, 3.45729544425*^9, 3.4572954794375*^9, 
+   3.457296596484375*^9, 3.45729672125*^9, 3.4572967530625*^9, 
+   3.4572969495*^9, 3.457297011609375*^9, 3.45729710884375*^9, 
+   3.45729725596875*^9, 3.45729732575*^9, {3.457297531953125*^9, 
+   3.457297559578125*^9}, 3.4572977909375*^9, 3.45729784578125*^9, 
+   3.45729789809375*^9, 3.457298066359375*^9, 3.457298481578125*^9, 
+   3.457298614875*^9, 3.457298690421875*^9, {3.457298759140625*^9, 
+   3.457298769578125*^9}, 3.457300531296875*^9, 3.457300656203125*^9, 
+   3.457300707625*^9, {3.457300757125*^9, 3.4573008071875*^9}, 
+   3.457300876296875*^9, 3.45730092153125*^9, 3.457300993484375*^9, 
+   3.457301056921875*^9, {3.457301095578125*^9, 3.4573011204375*^9}, 
+   3.457301154421875*^9, 3.457301203484375*^9, {3.45730124615625*^9, 
+   3.457301275890625*^9}, 3.457301347265625*^9}]
+}, Open  ]]
+},
+WindowSize->{1392, 933},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"7.0 for Microsoft Windows (32-bit) (February 18, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 2185, 57, 152, "Input"],
+Cell[CellGroupData[{
+Cell[2755, 81, 3607, 92, 192, InheritFromParent],
+Cell[6365, 175, 11835, 314, 257, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

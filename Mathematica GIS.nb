@@ -1,0 +1,85 @@
+(* Content-type: application/mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 7.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       145,          7]
+NotebookDataLength[      2378,         75]
+NotebookOptionsPosition[      1953,         56]
+NotebookOutlinePosition[      2291,         71]
+CellTagsIndexPosition[      2248,         68]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ StyleBox["GIS", "Title"]], "Input",
+ CellChangeTimes->{{3.477838672842705*^9, 3.477838678638636*^9}, {
+  3.477838847893119*^9, 3.477838851531336*^9}, {3.477838946077265*^9, 
+  3.477838947331478*^9}, {3.477839000770535*^9, 3.477839003562525*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"FindGeoLocation", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.4778389184725857`*^9, 3.4778389267462*^9}, {
+  3.477838987485692*^9, 3.477839126312304*^9}, {3.477839157969098*^9, 
+  3.4778391599279613`*^9}, {3.477839255496517*^9, 3.477839261326666*^9}},
+ FormatType->"InputForm"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"41.81`", ",", 
+   RowBox[{"-", "71.36`"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.477839529712535*^9}]
+}, Open  ]],
+
+Cell["Set Location Manually", "Text",
+ CellChangeTimes->{{3.4778389184725857`*^9, 3.4778389267462*^9}, 
+   3.477838987485692*^9, {3.477839068296732*^9, 3.477839074784293*^9}, {
+   3.4778392768791733`*^9, 3.477839296845108*^9}}],
+
+Cell[BoxData[
+ StyleBox["$GeoLocation", "Input"]], "Text",
+ CellChangeTimes->{{3.4778389184725857`*^9, 3.4778389267462*^9}, 
+   3.477838987485692*^9, {3.477839068296732*^9, 3.477839074784293*^9}, {
+   3.4778392768791733`*^9, 3.477839296845108*^9}, {3.477839327550601*^9, 
+   3.4778393959247713`*^9}, {3.4778394985811243`*^9, 3.477839534973377*^9}, {
+   3.477839572920617*^9, 3.4778395762035522`*^9}},
+ FormatType->"InputForm"]
+},
+WindowSize->{640, 652},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"7.0 for Mac OS X x86 (32-bit) (February 18, 2009)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[545, 20, 260, 4, 51, "Input"],
+Cell[CellGroupData[{
+Cell[830, 28, 301, 5, 27, "Input"],
+Cell[1134, 35, 144, 4, 27, "Output"]
+}, Open  ]],
+Cell[1293, 42, 227, 3, 26, "Text"],
+Cell[1523, 47, 426, 7, 26, "Text"]
+}
+]
+*)
+
+(* End of internal cache information *)
+
